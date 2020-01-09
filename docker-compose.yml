@@ -1,0 +1,37 @@
+version: '2'
+services:
+  nginx:
+    image: 'nginx:latest'
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+    depends_on:
+      - client
+      - api
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules/
+      - ./client:/app
+    environment:
+      - PORT=3012
+      - CLIENT_ID=1056953467588-s30ord4crj4su6s58vv8bdiovfvuk4gq.apps.googleusercontent.com
+      - CLIENT_SECRET=aM-nY2iPJdpZIwdsWDExUxu1
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    volumes:
+      - /app/node_modules/
+      - ./api:/app
+    environment:
+      - PORT=8001
+      - CLIENT_ID=1056953467588-s30ord4crj4su6s58vv8bdiovfvuk4gq.apps.googleusercontent.com
+      - CLIENT_SECRET=aM-nY2iPJdpZIwdsWDExUxu1
+      - EMAIL_SENDER=vivianaverylim@gmail.com
+      - EMAIL_RECIPIENT=vivianaverylim@gmail.com
