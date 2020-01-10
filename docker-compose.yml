@@ -16,8 +16,8 @@ services:
       dockerfile: Dockerfile.dev
       context: ./client
     volumes:
-      - /app/node_modules/
-      - ./client:/app
+      - /usr/app/node_modules/
+      - ./client:/usr/app
     environment:
       - PORT=3012
       - CLIENT_ID=1056953467588-s30ord4crj4su6s58vv8bdiovfvuk4gq.apps.googleusercontent.com
@@ -27,8 +27,8 @@ services:
       dockerfile: Dockerfile.dev
       context: ./api
     volumes:
-      - /app/node_modules/
-      - ./api:/app
+      - /usr/app/node_modules/
+      - ./api:/usr/app
     environment:
       - PORT=8001
       - CLIENT_ID=1056953467588-s30ord4crj4su6s58vv8bdiovfvuk4gq.apps.googleusercontent.com

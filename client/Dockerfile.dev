@@ -5,6 +5,6 @@ WORKDIR /usr/app
 COPY ./package.json ./
 RUN yarn install
 
-COPY . .
+# COPY . . # no need for this now as we're using docker volumes
 
 CMD ["yarn", "start"]
