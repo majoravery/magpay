@@ -1,7 +1,7 @@
 {
   "sections": {
     "info": {
-      "topLeft": [
+      "particulars": [
         {
           "label": "Name of Employer",
           "id": "nameOfEmployer",

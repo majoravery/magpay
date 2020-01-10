@@ -1,0 +1,27 @@
+@import '../../theme.scss';
+
+.new-payslip {
+  display: flex;
+  flex-direction: column;
+  height: auto; // Take height of children
+  padding: 16px 16px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.new-payslip-form {
+  margin-bottom: auto;
+
+  section {
+    border-bottom: $border;
+    border-right: $border;
+  }
+
+  section + section {
+    margin-top: 2em;
+  }
+}
+
+.new-payslip-form + .new-payslip-footer {
+  margin-top: 2em;
+}

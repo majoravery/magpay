@@ -1,0 +1,73 @@
+.header-header {
+  background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 6px 6px -6px, rgba(0, 0, 0, 0.1) 0px 0px 1px -1px;
+  color: #000000;
+  display: flex;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 16px 8px;
+  width: 100%;
+}
+
+.header-back-button {
+  flex: 1 0 10%;
+  text-align: center;
+}
+
+.go-back-button {
+  display: block;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  
+  span {
+    width: 24px;
+    height: 24px;
+    margin: auto;
+    text-align: center;
+    display: block;
+  }
+
+  span::before {
+    content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNMTkgMTFINy44M2w0Ljg4LTQuODhjLjM5LS4zOS4zOS0xLjAzIDAtMS40Mi0uMzktLjM5LTEuMDItLjM5LTEuNDEgMGwtNi41OSA2LjU5Yy0uMzkuMzktLjM5IDEuMDIgMCAxLjQxbDYuNTkgNi41OWMuMzkuMzkgMS4wMi4zOSAxLjQxIDAgLjM5LS4zOS4zOS0xLjAyIDAtMS40MUw3LjgzIDEzSDE5Yy41NSAwIDEtLjQ1IDEtMXMtLjQ1LTEtMS0xeiIvPjwvc3ZnPg==);
+    width: inherit;
+    height: inherit;
+    display: block;
+    margin: 0;
+  }
+}
+
+.header-title {
+  flex: 999 0 80%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.header-home-button {
+  flex: 1 0 10%;
+  text-align: center;
+}
+
+.go-home-button { // actually a menu now
+  display: block;
+  
+  span {
+    width: 24px;
+    height: 24px;
+    margin: auto;
+    display: block;
+    text-align: center;
+  }
+
+  span::before {
+    content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNNCAxOGgxNmMuNTUgMCAxLS40NSAxLTFzLS40NS0xLTEtMUg0Yy0uNTUgMC0xIC40NS0xIDFzLjQ1IDEgMSAxem0wLTVoMTZjLjU1IDAgMS0uNDUgMS0xcy0uNDUtMS0xLTFINGMtLjU1IDAtMSAuNDUtMSAxcy40NSAxIDEgMXpNMyA3YzAgLjU1LjQ1IDEgMSAxaDE2Yy41NSAwIDEtLjQ1IDEtMXMtLjQ1LTEtMS0xSDRjLS41NSAwLTEgLjQ1LTEgMXoiLz48L3N2Zz4=);
+    width: inherit;
+    height: inherit;
+    display: block;
+    margin: 0 auto;
+  }
+}

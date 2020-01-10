@@ -1,11 +1,22 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect, Link } from "react-router-dom";
+import { Route, Redirect, Link, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import PayslipFormInfo from './PayslipFormInfo';
-import PayslipFormBreakdown from './PayslipFormBreakdown';
+import Home from './views/home';
+import Splash from './views/splash';
+import NewPayslip from './views/newPayslip';
+import PreviewPayslip from './views/previewPayslip';
+import EmailPayslip from './views/emailPayslip';
 import PayslipExport from './PayslipExport';
-import { BACKEND_ROUTE } from '../constants';
+import { SessionContextProvider } from '../context/sessionContext';
+
+import {
+  BACKEND_ROUTE,
+  COOKIE_LOGGED_IN_IDENTIFIER,
+  COOKIE_LOGGED_IN_EXPIRE_DAYS,
+  COOKIE_USER_ID_IDENTIFIER,
+  COOKIE_USER_ID_EXPIRE_DAYS,
+} from '../constants';
 
 import './index.scss';
 
@@ -16,34 +27,47 @@ const BREAKDOWN = sections.breakdown;
 const FOOTER = sections.footer;
 const MODE_OF_PAYMENTS = INFO.bottomLeft.filter(row => row.id === 'modeOfPayment')[0].choices;
 
-function PrivateRoute({ loggedIn, children, ...rest }) {
+function PrivateRoute({ children, ...rest }) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        !!loggedIn ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: location }
-            }}
-            push
-          />
-        )
-      }
+      render={({ location }) => {
+        isStillLoggedIn().then(console.log);
+        // console.log(!!localStorage.getItem('loggedIn'));
+        const loggedIn = true;
+        return loggedIn ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/",
+                state: { from: location }
+              }}
+              push
+            />
+          )
+      }}
     />
   );
+}
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+async function isStillLoggedIn() {
+  const loggedIn = await fetch(`${BACKEND_ROUTE}/authhealthcheck`)
+    .then(res => res.status === 200 && res.status !== 401);
+  return loggedIn;
 }
 
 class Magbelle extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loggedIn: !!Cookies.get('magbelle_logged_in'),
-    };
+    this.state = {};
     this.fields = {};
+    this.accessToken = null;
+    this.refreshToken = null;
     
     // there has to be a better way to do these two tbh
     // Initiailising state for all the output items
@@ -76,6 +100,7 @@ class Magbelle extends Component {
     this.setField = this.setField.bind(this);
     this.updateSubtotal = this.updateSubtotal.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
+    this.renderMain = this.renderMain.bind(this);
     this.renderHomepage = this.renderHomepage.bind(this);
     this.renderPayslip = this.renderPayslip.bind(this);
     this.renderExport = this.renderExport.bind(this);
@@ -118,29 +143,34 @@ class Magbelle extends Component {
     this.setState({ [outputKey]: parseFloat(inputSum).toFixed(2) }, updateTotal ? this.updateTotal : null);
   }
 
-  renderHomepage() {
-    const { loggedIn } = this.state;
-    let component;
+  renderMain() {
+    const query = useQuery();
+    const loggedInQuery = query.get('loginSuccess');
+    const loggedInLocalStorage = localStorage.getItem('loggedIn');
 
-    const loginPromise = () => (
-      Promise.resolve()
-    )
+    fetch(`${BACKEND_ROUTE}/authhealthcheck`)
+      .then(console.log);
 
-    if (loggedIn) {
-      component = (
-        <Fragment>
-          {/* <button className="button" onClick={() => {}}>Create pay slip from template</button> */}
-          <Link to="/payslip/new/" className="button">Create new pay slip</Link>
-        </Fragment>
+    if (!!loggedInQuery || !!loggedInLocalStorage) {
+      localStorage.setItem('loggedIn', 1);
+      return (
+        <Redirect to={{ pathname: '/home/', state: { from: '/' } }} push />
       );
-    } else {
-      component = (<a href={`${BACKEND_ROUTE}/login`} className="button">Login</a>);
     }
 
     return (
       <div className="homepageContainer">
         <h2 style={{ marginTop: 0, fontSize: '1.7em', }}>Magbelle Hair Salon<br/>Pay Slip Creator</h2>
-        {component}
+        <a href={`${BACKEND_ROUTE}/login`} className="button">Login</a>
+      </div>
+    );
+  }
+  
+  renderHomepage() {
+    return (
+      <div className="homepageContainer">
+        <h2 style={{ marginTop: 0, fontSize: '1.7em', }}>Magbelle Hair Salon<br/>Pay Slip Creator</h2>
+        <Link to="/payslip/new/" className="button">Create new pay slip</Link>
       </div>
     );
   }
@@ -148,15 +178,15 @@ class Magbelle extends Component {
   renderPayslip() {
     return (
       <div id="main">
-        <h1 className="title">Create new pay slip</h1>
-        <PayslipFormInfo info={INFO} setField={this.setField} updateSubtotal={this.updateSubtotal} state={this.state} />
-        <PayslipFormBreakdown breakdown={BREAKDOWN} setField={this.setField} updateSubtotal={this.updateSubtotal} state={this.state} />
+        <h1 className="title">New pay slip</h1>
+        {/* <PayslipFormInfo info={INFO} setField={this.setField} updateSubtotal={this.updateSubtotal} state={this.state} />
+        <PayslipFormBreakdown breakdown={BREAKDOWN} setField={this.setField} updateSubtotal={this.updateSubtotal} state={this.state} /> */}
         <section id="nextSteps">
           <div className="formButton">
             <Link to="/">Back</Link>
           </div>
           <div className="formButton" id="generatePdf">
-            <Link to="/payslip/export">Generate PDF</Link>
+            <Link to="/payslip/exportTest">Generate PDF</Link>
           </div>
         </section>
       </div>
@@ -165,23 +195,35 @@ class Magbelle extends Component {
 
   renderExport() {
     return (
-      <PayslipExport info={INFO} breakdown={BREAKDOWN} footer={FOOTER} state={this.outputForPdf} />
+      <PayslipExport info={INFO} breakdown={BREAKDOWN} footer={FOOTER} state={this.outputForPdf} accessToken={this.accessToken} />
     );
   }
 
   render() {
-    const { loggedIn } = this.state;
     return (
-      <Router>
+      <Fragment>
         {/* Rendering homepage component here as children doesn't work - it appears on top of everything else, not sure why*/}
-        <Route path="/" exact component={this.renderHomepage} />
-        <PrivateRoute loggedIn={loggedIn} path="/payslip/new/">
+        {/* <Route path="/" exact component={this.renderMain} /> */}
+        <Route path="/home" exact component={Home} />
+        <Route path="/splash" exact component={Splash} />
+        <Route path="/newPayslip" exact>
+          <NewPayslip />
+        </Route>
+        <Route path="/previewPayslip" exact component={PreviewPayslip} />
+        <Route path="/emailPayslip" exact component={EmailPayslip} />
+        {/* <PrivateRoute path="/home/">
+          {this.renderHomepage()}
+        </PrivateRoute>
+        <PrivateRoute path="/payslip/new/">
           {this.renderPayslip()}
         </PrivateRoute>
-        <PrivateRoute loggedIn={loggedIn} path="/payslip/export/">
+        <PrivateRoute path="/payslip/export/">
           {this.renderExport()}
         </PrivateRoute>
-      </Router>
+
+        <Route path="/payslip/newTest/" component={this.renderPayslip} />
+        <Route path="/payslip/exportTest/" component={this.renderExport} /> */}
+      </Fragment>
     );
   }
 }

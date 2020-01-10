@@ -216,6 +216,7 @@ function blobToDataURL(blob, callback) {
 }
 
 const EmailLink = ({ pdfFileName, ...props }) => {
+  const { state, accessToken } = props;
   const [dataUri, setDataUri] = useState(null);
   const [sentStatus, setSentStatus] = useState(null);
   let component;
@@ -232,12 +233,14 @@ const EmailLink = ({ pdfFileName, ...props }) => {
       body: JSON.stringify({ 
         dataUri,
         pdfFileName,
-        state: props.state,
+        state,
+        accessToken,
       }),
     })
       .then(res => res.json())
       .then(({ res }) => {
-        const sentStatus = !res.rejected.length && !!res.accepted.length;
+        console.log({ res });
+        const sentStatus = res && !res.rejected.length && !!res.accepted.length;
         setSentStatus(sentStatus);
       })
       .catch(console.error);
@@ -253,7 +256,7 @@ const EmailLink = ({ pdfFileName, ...props }) => {
         }
         
         if (error || (!loading && !url)) {
-          component = <p className="exportText">Error</p>;
+          component = <p className="exportButton">Error</p>;
         } else if (!error && !loading && url) {
 
           if (sentStatus === null) {
@@ -275,30 +278,18 @@ const EmailLink = ({ pdfFileName, ...props }) => {
   );
 }
 
-const DownloadLink = ({ pdfFileName, ...props }) => {
-  let component;
-
-  return (
-    <PDFDownloadLink document={<PDF {...props} />} fileName={pdfFileName}>
-      {({ blob, url, loading, error }) => {
-        component = loading ? <p className="exportText">Loading document...</p> : <button onClick={() => {}} className="exportButton">Download PDF</button>
-
-        return <div className="exportContainer">{component}</div>;
-      }}
-    </PDFDownloadLink>
-  );
-};
-
 const PayslipExport = props => {
   const { nameOfEmployee, salaryPeriod } = props.state;
 
   const pdfFileName = [nameOfEmployee, salaryPeriod].join('_').replace(' ', '-');
 
   return (
-    <div style={{ width: '100%', height: '100%', padding: '1em' }}>
-      <PDFViewer width="100%" height="85%"><PDF {...props} /></PDFViewer>
-      {/* <DownloadLink pdfFileName={pdfFileName} {...props} /> */}
-      <section style={{ width: '100%', height: '15%', paddingTop: '32px' }} id="nextSteps">
+    <div id="main">
+      <h1 className="title">View PDF</h1>
+      <div style={{ height: '75%', width: '100%' }}>
+        <PDFViewer width="100%" height="100%"><PDF {...props} /></PDFViewer>
+      </div>
+      <section style={{ paddingTop: '32px' }} id="nextSteps">
         <div className="formButton">
           <Link to="/payslip/new">Back</Link>
         </div>

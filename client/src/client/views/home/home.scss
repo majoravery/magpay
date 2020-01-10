@@ -1,0 +1,22 @@
+@import '../../theme.scss';
+
+.home {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 16px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.home-prompt {
+  font-family: 'Work Sans', sans-serif;
+}
+
+.home-prompt + .home-actions {
+  margin-top: 16px;
+}
+
+.home-actions {
+  margin-bottom: auto;
+}

@@ -1,0 +1,44 @@
+$grid-columns: 50% 50%;
+$primary-colour: #FFFCEF;
+$secondary-colour: navajowhite;
+$contrast-colour: darkolivegreen;
+$border: 1px solid $contrast-colour;
+
+$subtotal-bg-colour: #efece1;
+$total-bg-colour: #d6d3c7;
+
+.button {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: block;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1em;
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+
+  &:active,
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 12px, rgba(0, 0, 0, 0.5) 0px 0px 0.5px;
+  }
+
+  &.disabled,
+  &.disabled:active,
+  &.disabled:hover {
+    background-color: #eeeeee;
+    border-color: #777777;
+    color: #777777;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  & + & {
+    margin-top: 16px;
+  }
+}

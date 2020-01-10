@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Magbelle from './client/Magbelle';
+import RootContainer from './client/app';
 
-ReactDOM.render(<Magbelle />, document.getElementById('root'));
+ReactDOM.render(<RootContainer />, document.getElementById('root'));

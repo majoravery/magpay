@@ -1,0 +1,115 @@
+@import '../../theme.scss';
+
+.datepicker,
+.monthpicker,
+.numeral,
+.radio,
+.readonly,
+.text, {
+  display: grid;
+  grid-template-columns: $grid-columns;
+  position: relative;
+}
+
+.label {
+  align-items: center;
+  // align-items: flex-start; // seems to be only for radio label?
+  border-left: $border;
+  border-top: $border;
+  display: flex;
+  grid-column: 1 / 2;
+  padding: 0.5em;
+}
+
+.input {
+  align-items: center;
+  border-left: $border;
+  border-top: $border;
+  display: flex;
+  grid-column: 2 / 3;
+  padding: 0.5em;
+}
+
+.input input {
+  background-color: inherit;
+  border: none;
+  font: inherit;
+  height: 100%;
+  outline: none;
+  padding: 0;
+  position: relative;
+  resize: none;
+  width: 100%;
+}
+
+.output {
+  align-items: center;
+  border-left: $border;
+  // border-right: $border; // FIXME: do i really need this?
+  border-top: $border;
+  display: flex;
+  grid-column: 2 / 3;
+  padding: 0.5em;
+}
+
+.output span {
+  text-align: right;
+  width: 100%;
+}
+
+/** Specifics **/
+
+.datepicker {
+
+}
+
+.monthpicker {
+
+}
+
+.numeral {
+  .input input {
+    text-align: right;
+  }
+}
+
+.radio {
+  .options {
+    border-left: $border;
+    border-top: $border;
+    grid-column: 2 / 3;
+  }
+
+  .option {
+    padding: 0 0.5em;
+  }
+
+  .option + .option {
+    border-top: $border;
+  }
+
+  .option input {
+    margin: 1em 0 0;
+    vertical-align: top;
+  }
+
+  .option label {
+    display: inline-block;
+    padding: 0.5em;
+    padding-right: 0;
+  }
+}
+
+.readonly {
+  &[data-type="subtotal"] {
+    background-color: $subtotal-bg-colour;
+  }
+
+  &[data-type="total"] {
+    background-color: $total-bg-colour;
+  }
+}
+
+.text {
+
+}
