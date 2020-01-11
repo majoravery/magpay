@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { BlobProvider } from '@react-pdf/renderer';
 
 import Header from '../../atoms/header';
+import { FormContextConsumer } from '../../../context/formContext';
 import { BACKEND_ROUTE } from '../../../constants';
 
 import './emailPayslip.scss';
@@ -21,6 +22,18 @@ const EmailPayslip = props => {
   const [dataUri, setDataUri] = useState(null);
   const [sentStatus, setSentStatus] = useState(null);
 
+  const [recipient, setRecipient] = useState('vivianaverylim@gmail.com');
+  const [subject, setSubject] = useState('Payslip for employee XYZ');
+  const [message, setMessage] = useState(null);
+
+  const recipientInputRef = useRef(null);
+  const subjectInputRef = useRef(null);
+  const messageInputRef = useRef(null);
+
+  const handleRecipientInput = e => setRecipient(e.target.value);
+  const handleSubjectInput = e => setSubject(e.target.value);
+  const handleMessageInput = e => setMessage(e.target.value);
+
   function sendEmail() {
     setSentStatus(false);
     fetch(`${BACKEND_ROUTE}/email`, {
@@ -29,6 +42,8 @@ const EmailPayslip = props => {
       credentials: 'include',
       body: JSON.stringify({ 
         dataUri,
+        subject,
+
         // pdfFileName,
         // state,
         // accessToken,
@@ -45,50 +60,53 @@ const EmailPayslip = props => {
 
   // const document = <PDF {...props} />;
   return (
-    <Fragment>
+    <FormContextConsumer>
+      {({ nameOfEmployee, salaryPeriod }) => (
+        <Fragment>
+          <BlobProvider document={null}>
+            {({ blob, url, loading, error }) => {
+              if (blob) {
+                blobToDataURL(blob, setDataUri);
+              }
+              
+              if (!error && !loading && (url || blob)) {
+                setReady(true);
+              }
+            }}
+          </BlobProvider>
 
-      <BlobProvider document={null}>
-        {({ blob, url, loading, error }) => {
-          if (blob) {
-            blobToDataURL(blob, setDataUri);
-          }
-          
-          if (!error && !loading && (url || blob)) {
-            setReady(true);
-          }
-        }}
-      </BlobProvider>
+          <Header title="Email payslip" />
+          <div className="email-payslip">
+            <div className="email-payslip-box">
+            
+              <div className="email-payslip-field">
+                <label htmlFor="recipient">Recipient Address</label>
+                <input id="recipient" name="recipient" type="text" value={recipient} ref={recipientInputRef} onChange={handleRecipientInput} />
+              </div>
 
-      <Header title="Email payslip" />
-      <div className="email-payslip">
-        <div className="email-payslip-box">
-        
-          <div className="email-payslip-field">
-            <label htmlFor="email-address">Recipient Address</label>
-            <input id="email-address" name="email-address" type="text" defaultValue="vivianaverylim@gmail.com" />
+              <div className="email-payslip-field">
+                <label htmlFor="subject">Subject</label>
+                <input id="subject" name="subject" type="text" value={subject} ref={subjectInputRef} onChange={handleSubjectInput} />
+              </div>
+
+              <div className="email-payslip-field">
+                <label htmlFor="message">Message</label>
+                <textarea id="message" name="message" type="text" rows="8" placeholder="Type message here" value={message} ref={messageInputRef} onChange={handleMessageInput} ></textarea>
+              </div>
+
+              <div className="email-payslip-attachment">
+                <span></span>File attached:
+                <p>Payslip for {nameOfEmployee ? nameOfEmployee : `[employee name]`} - {salaryPeriod ? salaryPeriod : `[salary period]`}</p>
+              </div>
+
+            </div>
+            <div className="email-payslip-footer">
+              <button onClick={sendEmail} className={`button send-email-button ${!ready && 'disabled'}`}>Send email</button>
+            </div>
           </div>
-
-          <div className="email-payslip-field">
-            <label htmlFor="subject">Subject</label>
-            <input id="subject" name="subject" type="text" placeholder="Payslip for employee XYZ"/>
-          </div>
-
-          <div className="email-payslip-field">
-            <label htmlFor="message">Message</label>
-            <textarea id="message" name="message" type="text" rows="8" placeholder="Type message here"></textarea>
-          </div>
-
-          <div className="email-payslip-attachment">
-            <span></span>File attached:
-            <p>[employee] payslip for [duration]</p>
-          </div>
-
-        </div>
-        <div className="email-payslip-footer">
-          <button onClick={sendEmail} className={`button send-email-button ${!ready && 'disabled'}`}>Send email</button>
-        </div>
-      </div>
-    </Fragment>
+        </Fragment>
+      )}
+    </FormContextConsumer>
   );
 }
 

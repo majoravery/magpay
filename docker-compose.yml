@@ -33,5 +33,6 @@ services:
       - PORT=8001
       - CLIENT_ID=1056953467588-s30ord4crj4su6s58vv8bdiovfvuk4gq.apps.googleusercontent.com
       - CLIENT_SECRET=aM-nY2iPJdpZIwdsWDExUxu1
+      - REDIRECT_URI=http://localhost:3050/api/oauthcallback
       - EMAIL_SENDER=vivianaverylim@gmail.com
       - EMAIL_RECIPIENT=vivianaverylim@gmail.com

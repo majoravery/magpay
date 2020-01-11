@@ -3,7 +3,7 @@
 .preview-payslip {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 56px); // 56 is height of header
+  height: calc(100vh - 56px); // 56 is height of header
   padding: 16px 16px 32px;
   position: relative;
   width: 100%;

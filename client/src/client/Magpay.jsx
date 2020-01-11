@@ -6,8 +6,8 @@ import Splash from './views/splash';
 import NewPayslip from './views/newPayslip';
 import PreviewPayslip from './views/previewPayslip';
 import EmailPayslip from './views/emailPayslip';
-import { SessionContextConsumer } from '../context/sessionContext';
 import { FormContextProvider } from '../context/formContext';
+import { SessionContextConsumer } from '../context/sessionContext';
 
 let authed = true; // FIXME: set this to false when going live and auth is implemented
 
