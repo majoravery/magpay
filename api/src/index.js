@@ -1,27 +1,18 @@
+const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session'); // FOR THE SAFETY OF OUR TOKENS
 const destroyer = require('server-destroy');
 const express = require('express');
 const fs = require('fs');
-const { google } = require('googleapis');
 const http = require('http');
 const nodemailer = require('nodemailer');
 const path = require('path');
-const session = require('cookie-session')
 const url = require('url');
-
-// let crypto;
-// try {
-//   crypto = require('crypto');
-// } catch (err) {
-//   console.log('crypto support is disabled!');
-// }
 
 require('dotenv').config();
 
 const app = express();
-const expiryDate = new Date(Date.now() + 60 * 60 * 24 * 7 * 1000) // One week
 const scopes = ['https://mail.google.com/'];
 
 const oauth2Client = new google.auth.OAuth2(
@@ -42,7 +33,7 @@ app.use(cookieSession({
   cookie: {
     secure: true,
     httpOnly: true,
-    expires: expiryDate
+    expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000) // One week
   }
 }))
 app.use(bodyParser.json());
@@ -98,13 +89,22 @@ app.get('/oauthcallback', async (request, response) => {
   }
   accessToken = tokens.access_token;
 
+  request.session.isLoggedIn = true;
+
   response
     .cookie('magbelle_rt', refreshToken, { maxAge: 604800, httpOnly: true }) // One week
     .cookie('magbelle_at', accessToken, { maxAge: 604800, httpOnly: true }) // One week
-    .cookie('magbelle_logged_in', 1, { domain: process.env.FRONTEND_DOMAIN, maxAge: 604800 }) // One week
-    .json({ hello: 'world' });
-    // .redirect(process.env.FRONTEND_URL);
+    .redirect('/home');
 });
+
+app.get('/logincheck', (request, response) => {
+  console.log(request.session.isLoggedIn);
+  if (request.session.isLoggedIn) {
+    response.status(200).send({ success: true });
+  } else {
+    response.status(401).send({ success: false });
+  }
+})
 
 app.post('/email', async (request, response) => {
   const { cookies } = request;

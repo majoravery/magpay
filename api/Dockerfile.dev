@@ -7,4 +7,4 @@ RUN yarn install
 
 # COPY . . # no need for this now as we're using docker volumes
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:dev"]

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 import Home from './views/home';
@@ -7,40 +7,39 @@ import NewPayslip from './views/newPayslip';
 import PreviewPayslip from './views/previewPayslip';
 import EmailPayslip from './views/emailPayslip';
 import { FormContextProvider } from '../context/formContext';
-import { SessionContextConsumer } from '../context/sessionContext';
 
-let authed = true; // FIXME: set this to false when going live and auth is implemented
-
-function PrivateRoute({ children, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={({ location }) => {
-        return authed
-        ? children
-        : (
-            <Redirect
-              to={{
-                pathname: "/",
-                state: { from: location }
-              }}
-              push
-            />
-          );
-      }}
-    />
-  );
-}
+import { BACKEND_ROUTE } from '../constants';
 
 const Magpay = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const PrivateRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) => {
+          console.log({ loggedIn });
+          return loggedIn
+            ? children
+            : (
+                <Redirect
+                  to={{
+                    pathname: "/", // Maybe add something here specifying that you're redirected bc you're not logged in
+                    state: { from: location }
+                  }}
+                  push
+                />
+              );
+        }}
+      />
+      
+    );
+  }
+
   return (
     <FormContextProvider>
       <SessionContextConsumer>
-        {({ userId }) => {
-          if (userId) {
-            authed = true;
-          }
-          
+        {({ hey }) => {
           return (
             <Fragment>
               <Route path="/" exact component={Splash} />
