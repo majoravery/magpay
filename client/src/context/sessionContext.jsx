@@ -1,13 +1,13 @@
-// NOT IN USE
 import React, { Component, createContext } from 'react';
 import { node, string, number } from 'prop-types';
 import cookie from 'js-cookie';
 import { captureException } from '../captureException';
 
-import { COOKIE_STATE_TRUE } from '../constants';
+import { BACKEND_ROUTE, COOKIE_STATE_TRUE } from '../constants';
 
 const defaultState = {
   userId: undefined,
+  loggedIn: undefined,
 };
 
 const { Provider, Consumer } = createContext(defaultState);
@@ -54,7 +54,7 @@ class SessionContextProvider extends Component {
     return { id: 'mabel' };
   }
 
-  setUserLoggedIn(userId) {
+  async setUserLoggedIn(userId) {
     const {
       cookieLoggedInIdentifier,
       cookieLoggedInExpireDays,
@@ -68,6 +68,9 @@ class SessionContextProvider extends Component {
       cookie.remove(cookieUserIdIdentifier);
       cookie.remove(cookieLoggedInIdentifier);
     }
+
+    const { success: loginSucccess } = await fetch(`${BACKEND_ROUTE}/logincheck`).then(res => res.json());
+    this.setState({ loggedIn: loginSucccess });
   }
 
   logUserIn(userId) {
@@ -88,9 +91,10 @@ class SessionContextProvider extends Component {
 
   render() {
     const { children } = this.props;
-    const { userId } = this.state;
+    const { userId, loggedIn } = this.state;
     const value = {
       userId,
+      loggedIn,
       logUserOut: this.logUserOut,
       logUserIn: this.logUserIn,
     };
