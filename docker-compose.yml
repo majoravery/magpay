@@ -33,3 +33,4 @@ services:
       - CLIENT_ID=28209513233-ndt4p5trvkqaqjooc7hg5q4u0na2ndf0.apps.googleusercontent.com
       - CLIENT_SECRET=UoJDSlQwLQFPHMxxOesIByzK
       - REDIRECT_URI=http://localhost:3050/api/oauthcallback
+      - DOMAIN=http://localhost:3050

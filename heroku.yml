@@ -7,3 +7,4 @@ build:
     CLIENT_ID: 28209513233-ndt4p5trvkqaqjooc7hg5q4u0na2ndf0.apps.googleusercontent.com
     CLIENT_SECRET: UoJDSlQwLQFPHMxxOesIByzK
     REDIRECT_URI: https://magpay.herokuapp.com/api/oauthcallback
+    DOMAIN: https://magpay.herokuapp.com

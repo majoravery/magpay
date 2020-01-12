@@ -39,7 +39,7 @@ app.use(
 );
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL); // Update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Origin', process.env.DOMAIN); // Update to match the domain you will make the request from
   res.header('Access-Control-Allow-Credentials', true); // To allow FE to fetch with credentials
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
@@ -97,10 +97,9 @@ app.get('/oauthcallback', async (request, response) => {
   }
   accessToken = tokens.access_token;
 
-  request.session.isLoggedIn = true;
-
   const oauth2data = await oauth2.userinfo.get({ auth: oauth2Client });
   request.session.userinfo = oauth2data.data;
+  request.session.isLoggedIn = true;
 
   response
     .cookie('magbelle_rt', refreshToken, { maxAge: 604800, httpOnly: true }) // One week
@@ -133,7 +132,6 @@ app.post('/email', async (request, response) => {
     return;
   }
 
-  console.log({ refreshToken, accessToken });
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -161,7 +159,7 @@ app.post('/email', async (request, response) => {
       path: dataUri,
     }
   };
-
+  console.log(mail);
   transporter.sendMail(mail, (err, info) => {
     console.log(err, info);
     let obj;
