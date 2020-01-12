@@ -15,10 +15,10 @@ const Splash = props => {
   let root = document.documentElement;
 
   useEffect(() => {
-    const [primary, secondary, title] = splashColours[Math.floor(Math.random() * splashColours.length)];
+    const [primary, secondary] = splashColours[Math.floor(Math.random() * splashColours.length)];
     root.style.setProperty('--splash-primary-colour', primary);
     root.style.setProperty('--splash-secondary-colour', secondary);
-  }, []);
+  }, [root.style]);
 
   return (
     <div className="splash">

@@ -7,9 +7,9 @@ import NewPayslip from './views/newPayslip';
 import PreviewPayslip from './views/previewPayslip';
 import EmailPayslip from './views/emailPayslip';
 import EmailSent from './views/emailSent';
+import PrivacyPolicy from './views/privacyPolicy';
 import { FormContextProvider } from '../context/formContext';
 import { SessionContextConsumer } from '../context/sessionContext';
-import PayslipExport from './PayslipExport';
 
 const PrivateRoute = ({ children, loggedIn, ...rest }) => {
   return (
@@ -38,6 +38,7 @@ const Magpay = () => {
     <FormContextProvider>
       <SessionContextConsumer>
       {({ loggedIn }) => {
+        console.log(loggedIn);
         // NOTE: this might not work when users log out but that's not being implemented rn anyway
         if (loggedIn === undefined) {
           return false;
@@ -51,7 +52,7 @@ const Magpay = () => {
             <PrivateRoute path="/payslip/preview" loggedIn={loggedIn}><PreviewPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/email" loggedIn={loggedIn}><EmailPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/sent" loggedIn={loggedIn}><EmailSent /></PrivateRoute>
-            <Route path="/test" exact component={PayslipExport} />
+            <Route path="/privacy" component={PrivacyPolicy} />
           </Fragment>
         );
       }}

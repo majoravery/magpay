@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from "react-router-dom";
-import { Page, Text, View, Document, Font, PDFViewer, PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
+import { Page, Text, View, Document, Font, PDFViewer, BlobProvider } from '@react-pdf/renderer';
 
 import { BACKEND_ROUTE } from '../constants';
 

@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { string, bool } from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { BACKEND_ROUTE } from './../../../constants';
 
@@ -15,7 +15,7 @@ const Header = props => {
     <Fragment>
       <article className="header-header">
         <div className="header-back-button">
-          {!disableBackButton && <a className="go-back-button" onClick={() => history.goBack()}><span></span></a>}
+          {!disableBackButton && <button className="go-back-button" onClick={() => history.goBack()}><span></span></button>}
         </div>
         <div className="header-title">{title}</div>
         <div className="header-menu-button">
@@ -25,6 +25,9 @@ const Header = props => {
       <div className={`menu${!isMenuOpen ? ' hidden' : ''}`}>
         <button className="close-menu-button" onClick={() => setIsMenuOpen(false)}><span></span></button>
         <ul className="menu-items">
+          <li className="menu-item"><Link to='/home'>Home</Link></li>
+          <li className="menu-item"><Link to='/privacy'>Privacy policy</Link></li>
+          <hr className="menu-separator"></hr>
           <li className="menu-item disabled">Change language</li>
         </ul>
         <div className="logout-area">

@@ -2,13 +2,8 @@ const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session'); // FOR THE SAFETY OF OUR TOKENS
-const destroyer = require('server-destroy');
 const express = require('express');
-const fs = require('fs');
-const http = require('http');
 const nodemailer = require('nodemailer');
-const path = require('path');
-const url = require('url');
 
 require('dotenv').config();
 
@@ -22,7 +17,6 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URI,
 );
 
-let windowObjectReference;
 let refreshToken;
 let accessToken;
 
@@ -93,7 +87,7 @@ app.get('/logout', (request, response) => {
 app.get('/oauthcallback', async (request, response) => {
   const { code } = request.query;
   if (!code) {
-    response.json({ success: false, message: 'Missing authorisation token' })
+    response.json({ success: false, message: 'Missing authorisation token' }).end();
   }
 
   const { tokens } = await oauth2Client.getToken(code);
@@ -118,6 +112,7 @@ app.get('/user', (request, response) => {
   response.json(request.session.userinfo).end();
 })
 
+// FIXME: try another method
 app.get('/logincheck', (request, response) => {
   if (request.session.isLoggedIn) {
     response.status(200).send({ success: true });
@@ -138,7 +133,7 @@ app.post('/email', async (request, response) => {
     return;
   }
 
-  // console.log({ refreshToken, accessToken });
+  console.log({ refreshToken, accessToken });
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -168,6 +163,7 @@ app.post('/email', async (request, response) => {
   };
 
   transporter.sendMail(mail, (err, info) => {
+    console.log(err, info);
     let obj;
     if (err) {
       obj = {

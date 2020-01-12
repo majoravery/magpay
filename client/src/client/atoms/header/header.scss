@@ -132,6 +132,11 @@
   font-size: 1em;
   font-weight: bold;
 
+  a {
+    color: #000000;
+    text-decoration: none;
+  }
+
   &.disabled {
     color: #aaaaaa;
     cursor: not-allowed;
@@ -139,8 +144,11 @@
   }
 }
 
-.menu-item + .menu-item {
-  margin-top: 2em;
+
+.menu-item + .menu-item,
+.menu-item + .menu-separator,
+.menu-separator + .menu-item {
+  margin-top: 1.5em;
 }
 
 .logout-area {
