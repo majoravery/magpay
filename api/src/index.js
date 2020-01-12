@@ -67,6 +67,11 @@ app.get('/', (request, response, next) => {
 });
 
 app.get('/login', (request, response) => {
+  if (request.session.isLoggedIn) {
+    response.redirect('/home');
+    return;
+  }
+
   const auth = new Promise((resolve, reject) => {
     const authorizeUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
@@ -75,6 +80,14 @@ app.get('/login', (request, response) => {
 
     response.redirect(authorizeUrl);
   })
+});
+
+app.get('/logout', (request, response) => {
+  request.session = null;
+  response
+    .clearCookie('magbelle_rt')
+    .clearCookie('magbelle_at')
+    .redirect('/');
 });
 
 app.get('/oauthcallback', async (request, response) => {
