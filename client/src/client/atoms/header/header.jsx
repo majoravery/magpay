@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { string, bool } from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import { BACKEND_ROUTE } from './../../../constants';
 
 import './header.scss';
 
 const Header = props => {
   const { title, disableBackButton } = props;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   let history = useHistory();
 
   return (
-    <article className="header-header">
-      <div className="header-back-button">
-        {!disableBackButton && <a className="go-back-button" onClick={() => history.goBack()}><span></span></a>}
+    <Fragment>
+      <article className="header-header">
+        <div className="header-back-button">
+          {!disableBackButton && <a className="go-back-button" onClick={() => history.goBack()}><span></span></a>}
+        </div>
+        <div className="header-title">{title}</div>
+        <div className="header-menu-button">
+          <button className="open-menu-button" onClick={() => setIsMenuOpen(true)}><span></span></button>
+        </div>
+      </article>
+      <div className={`menu${!isMenuOpen ? ' hidden' : ''}`}>
+        <button className="close-menu-button" onClick={() => setIsMenuOpen(false)}><span></span></button>
+        <ul className="menu-items">
+          <li className="menu-item disabled">Change language (coming soon)</li>
+        </ul>
+        <div className="logout-area">
+          <a href={`${BACKEND_ROUTE}/logout`} className="logout">Logout</a>
+        </div>
       </div>
-      <div className="header-title">{title}</div>
-      <div className="header-home-button">
-        <Link to="/home" className="go-home-button"><span></span></Link>
-      </div>
-    </article>
+    </Fragment>
   );
 }
 
