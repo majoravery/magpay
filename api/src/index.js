@@ -180,7 +180,7 @@ app.post('/email', async (request, response) => {
   })
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8001, () => {
   console.log(`App running on port ${process.env.PORT}.`)
 });
 
