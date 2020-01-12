@@ -25,7 +25,7 @@ const Header = props => {
       <div className={`menu${!isMenuOpen ? ' hidden' : ''}`}>
         <button className="close-menu-button" onClick={() => setIsMenuOpen(false)}><span></span></button>
         <ul className="menu-items">
-          <li className="menu-item disabled">Change language (coming soon)</li>
+          <li className="menu-item disabled">Change language</li>
         </ul>
         <div className="logout-area">
           <a href={`${BACKEND_ROUTE}/logout`} className="logout">Logout</a>

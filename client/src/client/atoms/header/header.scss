@@ -134,6 +134,7 @@
 
   &.disabled {
     color: #aaaaaa;
+    cursor: not-allowed;
     pointer-events: none;
   }
 }
