@@ -43,7 +43,8 @@ const PDF = () => (
 const EmailPayslip = props => {
   const [ready, setReady] = useState(false);
   const [dataUri, setDataUri] = useState(null);
-  const [sentStatus, setSentStatus] = useState(null);
+  const [isSending, setIsSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const [recipient, setRecipient] = useState('vivianaverylim@gmail.com');
   const [subject, setSubject] = useState('New pay slip from Magpay');
@@ -64,7 +65,7 @@ const EmailPayslip = props => {
   }, [])
 
   function sendEmail() {
-    setSentStatus(false);
+    setIsSending(true);
     fetch(`${BACKEND_ROUTE}/email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -76,26 +77,27 @@ const EmailPayslip = props => {
         message,
       }),
     })
-      .then(e => { console.log(e); return e;})
       .then(res => res.json())
-      .then(({ res }) => {
-        console.log({ res });
-        const status = res && !res.rejected.length && !!res.accepted.length;
-        setSentStatus(status);
+      .then(({ success, message }) => {
+        if (!success) {
+          console.error(`Error: ${message}`);
+        }
+        setIsSending(false);
+        setSent(success);
       })
       .catch(console.error);
   }
 
-  if (sentStatus) {
+  if (sent) {
     return (<Redirect to={`/payslip/sent?recipient=${recipient}`} />);
   }
 
   return (
     <FormContextConsumer>
       {({ nameOfEmployee, salaryPeriod }) => {
-        const isButtonDisabled = !ready && sentStatus !== null;
+        const isButtonDisabled = !ready || !!isSending;
         const name = nameOfEmployee ? nameOfEmployee : `[employee name]`;
-        
+
         return (
           <Fragment>
             {!ready && <BlobProvider document={<PDF />}>
@@ -136,8 +138,8 @@ const EmailPayslip = props => {
 
               </div>
               <div className="email-payslip-footer">
-                <button onClick={sendEmail} className={`button send-email-button ${!ready && 'disabled'}`}>
-                  {sentStatus !== null ? (<span className="spinner">&nbsp;</span>): 'Send email'}
+                <button onClick={sendEmail} className={`button send-email-button ${isButtonDisabled && 'disabled'}`} disabled={isButtonDisabled}>
+                  {isSending ? (<span className="spinner">&nbsp;</span>) : 'Send email' }
                 </button>
               </div>
             </div>

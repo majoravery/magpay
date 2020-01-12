@@ -23,7 +23,7 @@ const EmailSent = props => {
           </div>
         <div className="email-sent-actions">
           <Link to="/payslip/new/" className="button">Create another pay slip</Link>
-          <Link to="/" className="button">Back to home page</Link>
+          <Link to="/home" className="button">Back to home page</Link>
         </div>
       </div>
     </Fragment>

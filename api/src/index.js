@@ -122,6 +122,7 @@ app.post('/email', async (request, response) => {
       success: false,
       message: 'Access token and refresh token missing.'
     }).end();
+    return;
   }
 
   // console.log({ refreshToken, accessToken });
@@ -134,8 +135,8 @@ app.post('/email', async (request, response) => {
       user: process.env.EMAIL_SENDER,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      // refreshToken,
-      // accessToken,
+      refreshToken,
+      accessToken,
     }
   });
 
@@ -153,23 +154,20 @@ app.post('/email', async (request, response) => {
     }
   };
 
-  // const { error, info } = await transporter.sendMail(mail);
-  // console.log({ error, info });
-  // if (error) {
-  //   response.json({ success: false, message: error.message });
-  // } else {
-  //   response.json({ success: true });
-  // }
-
-  // response.end();
-
   transporter.sendMail(mail, (err, info) => {
-    console.log({ err, info });
+    let obj;
     if (err) {
-      response.json({ success: false, message: err.message }).end();
+      obj = {
+        success: false,
+        message: err.message,
+      }
     } else {
-      response.json({ success: true }).end();
+      obj = {
+        success: true,
+      }
     }
+
+    response.json(obj).end();
   })
 });
 
