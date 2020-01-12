@@ -8,3 +8,5 @@ build:
     CLIENT_SECRET: UoJDSlQwLQFPHMxxOesIByzK
     REDIRECT_URI: https://magpay.herokuapp.com/api/oauthcallback
     DOMAIN: https://magpay.herokuapp.com
+run: 
+  api: PORT=8001 yarn start
