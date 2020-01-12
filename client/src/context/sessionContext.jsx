@@ -1,8 +1,8 @@
 import React, { Component, createContext } from 'react';
 import { node, string, number } from 'prop-types';
 import cookie from 'js-cookie';
-import { captureException } from '../captureException';
 
+import { captureException } from '../captureException';
 import { BACKEND_ROUTE, COOKIE_STATE_TRUE } from '../constants';
 
 const defaultState = {
@@ -19,7 +19,7 @@ class SessionContextProvider extends Component {
     this.state = {
       ...defaultState,
     }
-    
+
     this.logUserOut = this.logUserOut.bind(this);
     this.logUserIn = this.logUserIn.bind(this);
   }
@@ -98,7 +98,6 @@ class SessionContextProvider extends Component {
       logUserOut: this.logUserOut,
       logUserIn: this.logUserIn,
     };
-
     return <Provider value={{ ...value }}>{children}</Provider>;
   }
 }

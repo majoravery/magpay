@@ -6,7 +6,37 @@ import { BACKEND_ROUTE } from '../constants';
 
 import styles from './PayslipExportStyles';
 
-import './PayslipExport.scss';
+import { sections } from './../form.json';
+
+const INFO = sections.info;
+const BREAKDOWN = sections.breakdown;
+const FOOTER = sections.footer;
+
+const state = {
+  additions: null,
+  advanceLoan: null,
+  basicPay: null,
+  bonus: null,
+  breakdown: null,
+  commission: null,
+  cpf: null,
+  dateOfPayment: null,
+  deductions: null,
+  earnings: null,
+  employeeCpf: null,
+  employerCpf: null,
+  icNo: null,
+  incomeTax: null,
+  modeOfPayment: null,
+  nameOfEmployee: null,
+  nameOfEmployer: null,
+  nettPayment: 0,
+  overtimeHours: null,
+  overtimePay: null,
+  ratePerHour: null,
+  reimbursement: null,
+  salaryPeriod: null,
+};
 
 const {
   infoLabelCol,
@@ -49,7 +79,7 @@ Font.register({
   src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
 });
 
-const InfoRows = ({ id, label, state, displayDollarSign }) => (
+const InfoRows = ({ id, label, displayDollarSign }) => (
   <View style={tableRow} key={id}>
     <View style={infoLabelCol}>
       <View style={infoLabelCell}>
@@ -78,13 +108,13 @@ const PDFHeader = () => (
   </View>
 );
 
-const PDFInfo = ({ info, state }) => (
+const PDFInfo = () => (
   <Fragment>
     <View style={left}>
-      {Object.keys(info)
+      {Object.keys(INFO)
         .filter(key => key === 'topLeft' || key === 'bottomLeft')
         .map(key => {
-          const rows = info[key];
+          const rows = INFO[key];
           return (
             <View style={table} key={key}>
               {rows.map(row => <InfoRows key={row.id} state={state} {...row} />)}
@@ -93,10 +123,10 @@ const PDFInfo = ({ info, state }) => (
         })}
     </View>
     <View style={right}>
-      {Object.keys(info)
+      {Object.keys(INFO)
         .filter(key => key === 'topRight' || key === 'cpfContribution')
         .map(key => {
-          const rows = info[key];
+          const rows = INFO[key];
           return (
             <View style={table} key={key}>
               {rows.map(row => <InfoRows key={row.id} state={state} {...row} displayDollarSign={key === 'cpfContribution'} />)}
@@ -107,8 +137,8 @@ const PDFInfo = ({ info, state }) => (
   </Fragment>
 );
 
-const PDFBreakdown = ({ breakdown, state }) => (
-  Object.keys(breakdown)
+const PDFBreakdown = () => (
+  Object.keys(BREAKDOWN)
     .filter(key => key !== 'nett')
     .map(key => (
       <View style={table} key={`${key}-table`}>
@@ -121,7 +151,7 @@ const PDFBreakdown = ({ breakdown, state }) => (
           </View>
         </View>
         
-        {breakdown[key]
+        {BREAKDOWN[key]
           .filter(row => row.type !== 'auto')
           .map(({ id, label }) => (
             <View style={tableRow} key={id}>
@@ -138,7 +168,7 @@ const PDFBreakdown = ({ breakdown, state }) => (
             </View>
           ))}
 
-        {breakdown[key]
+        {BREAKDOWN[key]
           .filter(row => row.type === 'auto')
           .map(({ id, label }) => (
             <View style={tableRow} key={id}>
@@ -158,8 +188,8 @@ const PDFBreakdown = ({ breakdown, state }) => (
     ))
 );
 
-const PDFNett = ({ breakdown, state }) => {
-  const { id, label } = breakdown['nett'][0]; // There's only one item in the "section"
+const PDFNett = () => {
+  const { id, label } = BREAKDOWN['nett'][0]; // There's only one item in the "section"
   return (
     <View style={table}>
       <View style={tableRow} key={id}>
@@ -174,11 +204,11 @@ const PDFNett = ({ breakdown, state }) => {
   );
 };
 
-const PDFFooter = ({ footer }) => (
+const PDFFooter = () => (
   <View style={table}>
     <View style={tableRow}>
-      {Object.keys(footer)
-        .map(key => footer[key][0]) // There's only one item in each "section"
+      {Object.keys(FOOTER)
+        .map(key => FOOTER[key][0]) // There's only one item in each "section"
         .map(({ id, label }) => (
           <View style={footerCol} key={id}><View style={footerCell}>
             <Text>{label}</Text>
@@ -189,18 +219,18 @@ const PDFFooter = ({ footer }) => (
   </View>
 );
 
-const PDF = ({ info, breakdown, footer, state }) => (
+const PDF = () => (
   <Document>
     <Page style={body}>
       <PDFHeader />
 
       <View style={container}>
-        <PDFInfo info={info} state={state} />
+        <PDFInfo INFO={INFO} state={state} />
         
         <View style={bottom}>
-          <PDFBreakdown breakdown={breakdown} state={state} />
-          <PDFNett breakdown={breakdown} state={state} />
-          <PDFFooter footer={footer} />
+          <PDFBreakdown BREAKDOWN={BREAKDOWN} state={state} />
+          <PDFNett BREAKDOWN={BREAKDOWN} state={state} />
+          <PDFFooter FOOTER={FOOTER} />
         </View>
       </View>
     </Page>
@@ -279,7 +309,9 @@ const EmailLink = ({ pdfFileName, ...props }) => {
 }
 
 const PayslipExport = props => {
-  const { nameOfEmployee, salaryPeriod } = props.state;
+  let nameOfEmployee = 'Name of Employee';
+  let salaryPeriod = 'Salary Period';
+  // const { nameOfEmployee, salaryPeriod } = props.state;
 
   const pdfFileName = [nameOfEmployee, salaryPeriod].join('_').replace(' ', '-');
 

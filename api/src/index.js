@@ -13,8 +13,9 @@ const url = require('url');
 require('dotenv').config();
 
 const app = express();
-const scopes = ['https://mail.google.com/'];
+const scopes = ['https://mail.google.com/', 'openid', 'email'];
 
+const oauth2 = google.oauth2('v2');
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
@@ -60,9 +61,9 @@ function storeTokens(tokens, response) {
 }
 
 // Routes
-
 app.get('/', (request, response, next) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' })
+  // response.json({ info: 'Node.js, Express, and Postgres API' })
+  response.redirect('/home');
 });
 
 app.get('/login', (request, response) => {
@@ -79,7 +80,7 @@ app.get('/login', (request, response) => {
 app.get('/oauthcallback', async (request, response) => {
   const { code } = request.query;
   if (!code) {
-    response.json({ 'you_dun': 'it wrong' })
+    response.json({ success: false, message: 'Missing authorisation token' })
   }
 
   const { tokens } = await oauth2Client.getToken(code);
@@ -91,14 +92,20 @@ app.get('/oauthcallback', async (request, response) => {
 
   request.session.isLoggedIn = true;
 
+  const oauth2data = await oauth2.userinfo.get({ auth: oauth2Client });
+  request.session.userinfo = oauth2data.data;
+
   response
     .cookie('magbelle_rt', refreshToken, { maxAge: 604800, httpOnly: true }) // One week
     .cookie('magbelle_at', accessToken, { maxAge: 604800, httpOnly: true }) // One week
     .redirect('/home');
 });
 
+app.get('/user', (request, response) => {
+  response.json(request.session.userinfo).end();
+})
+
 app.get('/logincheck', (request, response) => {
-  console.log(request.session.isLoggedIn);
   if (request.session.isLoggedIn) {
     response.status(200).send({ success: true });
   } else {
@@ -111,7 +118,10 @@ app.post('/email', async (request, response) => {
   const { magbelle_rt: refreshToken, magbelle_at: accessToken } = cookies;
 
   if (!refreshToken || !accessToken) {
-    response.json({ 'something': 'is wrong' }).end();
+    response.json({
+      success: false,
+      message: 'Access token and refresh token missing.'
+    }).end();
   }
 
   // console.log({ refreshToken, accessToken });
@@ -124,29 +134,43 @@ app.post('/email', async (request, response) => {
       user: process.env.EMAIL_SENDER,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      refreshToken,
-      accessToken,
+      // refreshToken,
+      // accessToken,
     }
   });
 
-  const { dataUri, state } = request.body;
-  const { nameOfEmployee, salaryPeriod } = state;
+  const { dataUri, recipient, subject, message } = request.body;
 
-  const message = {
-    from: process.env.EMAIL_SENDER,
-    to: process.env.EMAIL_RECIPIENT,
-    subject: `Payslip for ${nameOfEmployee} - ${salaryPeriod}`,
-    text: `Payslip for ${nameOfEmployee} - ${salaryPeriod}`,
-    html: `<p>Payslip for ${nameOfEmployee} - ${salaryPeriod}</p>`,
+  const mail = {
+    from: request.session.userinfo.email,
+    to: recipient,
+    subject,
+    text: message,
+    html: message,
     attachments: {
       filename: 'Payslip.pdf',
       path: dataUri,
     }
   };
 
-  transporter.sendMail(message)
-    .then(res => response.json({ res }))
-    .catch(console.error);
+  // const { error, info } = await transporter.sendMail(mail);
+  // console.log({ error, info });
+  // if (error) {
+  //   response.json({ success: false, message: error.message });
+  // } else {
+  //   response.json({ success: true });
+  // }
+
+  // response.end();
+
+  transporter.sendMail(mail, (err, info) => {
+    console.log({ err, info });
+    if (err) {
+      response.json({ success: false, message: err.message }).end();
+    } else {
+      response.json({ success: true }).end();
+    }
+  })
 });
 
 app.listen(process.env.PORT, () => {

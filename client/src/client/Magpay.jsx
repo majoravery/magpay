@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 import Home from './views/home';
@@ -6,9 +6,10 @@ import Splash from './views/splash';
 import NewPayslip from './views/newPayslip';
 import PreviewPayslip from './views/previewPayslip';
 import EmailPayslip from './views/emailPayslip';
-// import PrivateRoute from './atoms/privateRoute';
+import EmailSent from './views/emailSent';
 import { FormContextProvider } from '../context/formContext';
 import { SessionContextConsumer } from '../context/sessionContext';
+import PayslipExport from './PayslipExport';
 
 const PrivateRoute = ({ children, loggedIn, ...rest }) => {
   return (
@@ -49,6 +50,8 @@ const Magpay = () => {
             <PrivateRoute path="/payslip/new" loggedIn={loggedIn}><NewPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/preview" loggedIn={loggedIn}><PreviewPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/email" loggedIn={loggedIn}><EmailPayslip /></PrivateRoute>
+            <PrivateRoute path="/payslip/sent" loggedIn={loggedIn}><EmailSent /></PrivateRoute>
+            <Route path="/test" exact component={PayslipExport} />
           </Fragment>
         );
       }}

@@ -16,7 +16,6 @@ class FormContextProvider extends Component {
     this.state = { ...defaultState };
 
     this.setField = this.setField.bind(this);
-    // this.updateSubtotal = this.updateSubtotal.bind(this);
   }
 
   componentDidMount() {
