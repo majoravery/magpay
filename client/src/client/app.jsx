@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 
 import Magpay from './Magpay';
 import { SessionContextProvider } from '../context/sessionContext';
@@ -10,6 +10,16 @@ import {
   COOKIE_USER_ID_IDENTIFIER,
   COOKIE_USER_ID_EXPIRE_DAYS,
 } from '../constants';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 const RootContainer = () => {
   const session = {
@@ -22,6 +32,7 @@ const RootContainer = () => {
   return (
     <SessionContextProvider {...session}>
       <BrowserRouter>
+        <ScrollToTop /> {/* FIXME: not working */}
         <Magpay />
       </BrowserRouter>
     </SessionContextProvider>
