@@ -15,5 +15,3 @@ services:
       dockerfile: Dockerfile.api
       context: ./api
     environment:
-      - REDIRECT_URI=https://magpay.herokuapp.com/api/oauthcallback
-      - DOMAIN=https://magpay.herokuapp.com

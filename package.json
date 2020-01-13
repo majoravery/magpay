@@ -11,8 +11,7 @@
   },
   "scripts": {
     "start": "docker-compose up",
-    "build": "docker-compose -f docker-compose.yml -f production.yml up",
-    "deploy": "docker-compose build api client nginx && docker-compose up --no-deps -d api client nginx"
+    "deploy": "docker-compose -f docker-compose.yml -f production.yml build api client nginx && docker-compose -f docker-compose.yml -f production.yml up --no-deps -d api client nginx"
   },
   "devDependencies": {
     "prettier": "~1.19.1"
