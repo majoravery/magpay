@@ -111,7 +111,7 @@ app.get('/user', (request, response) => {
   response.json(request.session.userinfo).end();
 })
 
-// FIXME: try another method
+// FIXME: find a better session method that syncs with the tokens
 app.get('/logincheck', (request, response) => {
   if (request.session.isLoggedIn) {
     response.status(200).send({ success: true });
@@ -123,6 +123,7 @@ app.get('/logincheck', (request, response) => {
 app.post('/email', async (request, response) => {
   const { cookies } = request;
   const { magbelle_rt: refreshToken, magbelle_at: accessToken } = cookies;
+  const { email } = request.session.userinfo;
 
   if (!refreshToken || !accessToken) {
     response.json({
@@ -138,7 +139,7 @@ app.post('/email', async (request, response) => {
     secure: true,
     auth: {
       type: 'OAuth2',
-      user: process.env.EMAIL_SENDER,
+      user: email,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       refreshToken,
@@ -149,7 +150,7 @@ app.post('/email', async (request, response) => {
   const { dataUri, recipient, subject, message } = request.body;
 
   const mail = {
-    from: request.session.userinfo.email,
+    from: email,
     to: recipient,
     subject,
     text: message,
