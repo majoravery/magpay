@@ -1,14 +1,11 @@
 {
-  "name": "magbelle-pay-slip-backend",
+  "name": "magpay-api",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "start:dev": "nodemon src/index.js",
-    "build": "",
-    "test": "",
-    "eject": ""
+    "start": "PORT=8001 node src/index.js",
+    "start:dev": "nodemon src/index.js"
   },
   "engines": {
     "node": "~10.16.0",

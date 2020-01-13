@@ -1,5 +1,6 @@
 {
   "name": "magpay",
+  "description": "Magbelle Hair Salon pay slip generator",
   "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
@@ -7,6 +8,11 @@
   "engines": {
     "node": "~10.16.0",
     "npm": "~6.9.0"
+  },
+  "scripts": {
+    "start": "docker-compose up",
+    "build": "docker-compose -f docker-compose.yml -f production.yml up",
+    "deploy": "docker-compose build api client nginx && docker-compose up --no-deps -d api client nginx"
   },
   "devDependencies": {
     "prettier": "~1.19.1"

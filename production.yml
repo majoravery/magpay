@@ -1,0 +1,19 @@
+version: '2'
+services:
+  nginx:
+    build:
+      dockerfile: Dockerfile.nginx
+      context: ./nginx
+  client:
+    restart: always
+    build:
+      dockerfile: Dockerfile.client
+      context: ./client
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile.api
+      context: ./api
+    environment:
+      - REDIRECT_URI=https://magpay.herokuapp.com/api/oauthcallback
+      - DOMAIN=https://magpay.herokuapp.com
