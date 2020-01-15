@@ -9,7 +9,7 @@ RUN yarn install
 
 COPY ./api ./api
 
-CMD ["yarn", "start"]
+RUN yarn start
 
 # Client
 FROM node:10.16-alpine as client
@@ -22,7 +22,7 @@ RUN yarn install
 
 COPY ./client ./client
 
-CMD ["yarn", "build"]
+RUN yarn build
 
 # Client - nginx
 FROM nginx
