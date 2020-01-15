@@ -20,6 +20,8 @@ services:
       - ./client:/usr/app
     environment:
       - PORT=3012
+    depends_on:
+      - api
   api:
     restart: always
     build:

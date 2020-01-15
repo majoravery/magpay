@@ -1,12 +1,8 @@
 build:
   docker:
-    api: api/Dockerfile.api
-    client: client/Dockerfile.client
-    nginx: nginx/Dockerfile.nginx
+    magpay: Dockerfile
   config:
     CLIENT_ID: 28209513233-ndt4p5trvkqaqjooc7hg5q4u0na2ndf0.apps.googleusercontent.com
     CLIENT_SECRET: UoJDSlQwLQFPHMxxOesIByzK
     REDIRECT_URI: https://magpay.herokuapp.com/api/oauthcallback
     DOMAIN: https://magpay.herokuapp.com
-run: 
-  api: PORT=8001 yarn start
