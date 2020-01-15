@@ -30,4 +30,4 @@ COPY --from=client /usr/app/client/build /usr/share/nginx/html
 
 # Nginx routing
 FROM nginx
-COPY ./nginx/default.conf ./nginx/etc/nginx/conf.d/default.conf
+COPY ./nginx/default.conf ./etc/nginx/conf.d/default.conf
