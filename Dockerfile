@@ -24,8 +24,12 @@ COPY ./client ./client
 
 CMD ["yarn", "build"]
 
-# Nginx
+# Client - nginx
 FROM nginx
 EXPOSE 3012
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./client/nginx/default.conf ./client/etc/nginx/conf.d/default.conf
 COPY --from=client /usr/app/client/build /usr/share/nginx/html
+
+# Nginx routing
+FROM nginx
+COPY ./nginx/default.conf ./nginx/etc/nginx/conf.d/default.conf
