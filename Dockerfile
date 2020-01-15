@@ -24,9 +24,9 @@ CMD ["yarn", "build"]
 
 # Client - nginx
 FROM nginx
-EXPOSE 3012
-COPY ./client/nginx/default.conf ./client/etc/nginx/conf.d/default.conf
+COPY ./client/nginx/default.conf ./usr/app/client/etc/nginx/conf.d/default.conf
 COPY --from=client /usr/app/client/build /usr/share/nginx/html
+EXPOSE 3012
 
 # Nginx routing
 FROM nginx
