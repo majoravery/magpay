@@ -3,24 +3,24 @@ FROM node:10.16-alpine as api
 
 WORKDIR /usr/app/api
 
-COPY ./package.json ./
+COPY ./api/package.json ./
 RUN yarn install
 
-COPY . .
+COPY ./api .
 
-RUN yarn start
+CMD ["yarn", "start"]
 
 # Client
 FROM node:10.16-alpine as client
 
 WORKDIR /usr/app/client
 
-COPY ./package.json ./
+COPY ./client/package.json ./
 RUN yarn install
 
-COPY . .
+COPY ./client .
 
-RUN yarn build
+CMD ["yarn", "build"]
 
 # Client - nginx
 FROM nginx
