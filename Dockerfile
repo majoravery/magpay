@@ -1,26 +1,24 @@
 # API
 FROM node:10.16-alpine as api
 
-WORKDIR /usr/app
+WORKDIR /usr/app/api
 
-RUN mkdir ./api
-COPY ./api/package.json ./api
+COPY ./package.json ./
 RUN yarn install
 
-COPY ./api ./api
+COPY . .
 
 RUN yarn start
 
 # Client
 FROM node:10.16-alpine as client
 
-WORKDIR /usr/app
+WORKDIR /usr/app/client
 
-RUN mkdir ./client
-COPY ./client/package.json ./client
+COPY ./package.json ./
 RUN yarn install
 
-COPY ./client ./client
+COPY . .
 
 RUN yarn build
 
