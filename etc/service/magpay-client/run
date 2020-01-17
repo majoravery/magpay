@@ -1,3 +1,4 @@
 #!/bin/sh
 export PORT=3012
-exec /usr/app/client yarn build
+cd /usr/app/client
+exec serve -s build
