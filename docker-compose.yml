@@ -1,13 +1,13 @@
 version: '2'
 services:
-  nginx:
-    image: 'nginx:latest'
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
+  proxy:
+    image: haproxy:2.1
+    command: "haproxy -f /haproxy/haproxy-dev.cfg"
+    container_name: magpay-proxy
     ports:
-      - '3050:80'
+      - "3050:3050"
+    volumes:
+      - ./etc/haproxy/:/haproxy
     depends_on:
       - client
       - api
@@ -15,9 +15,12 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./client
+    container_name: magpay-client
     volumes:
       - /usr/app/node_modules/
       - ./client:/usr/app
+    ports:
+      - "3012:3012"
     environment:
       - PORT=3012
     depends_on:
@@ -27,9 +30,12 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./api
+    container_name: magpay-api
     volumes:
       - /usr/app/node_modules/
       - ./api:/usr/app
+    ports:
+      - "8001:8001"
     environment:
       - PORT=8001
       - CLIENT_ID=28209513233-ndt4p5trvkqaqjooc7hg5q4u0na2ndf0.apps.googleusercontent.com

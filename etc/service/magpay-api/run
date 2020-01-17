@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/app/api yarn start
