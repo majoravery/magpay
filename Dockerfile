@@ -22,12 +22,15 @@ COPY ./client .
 
 CMD ["yarn", "build"]
 
-# Client - nginx
-FROM nginx
-COPY ./client/nginx/default.conf ./usr/app/client/etc/nginx/conf.d/default.conf
-COPY --from=client /usr/app/client/build /usr/share/nginx/html
-EXPOSE 3012
+# Final image
+FROM alpine:3.10
 
-# Nginx routing
-FROM nginx
-COPY ./nginx/default.conf ./etc/nginx/conf.d/default.conf
+# FIXME: might not actuall need ncurses-libs
+RUN apk add --update runit nodejs npm haproxy ncurses-libs && \ 
+    rm -rf /var/cache/apk/*
+
+ADD etc/service  /etc/service
+ADD etc/haproxy  /etc/haproxy
+
+EXPOSE 3050
+ENTRYPOINT ["/sbin/runsvdir", "/etc/service"]
