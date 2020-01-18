@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { FormContextConsumer } from '../../../context/formContext';
 import { breakdown } from '../../../form.v2.json';
 
 const BG_COLOR = '#eee';
@@ -98,7 +97,7 @@ const numericValue = StyleSheet.create({
   width: COL_WIDTH_HALF,
 });
 
-const PDFBreakdown = () => {
+const PDFBreakdown = props => {
   return (
     Object.keys(breakdown)
       .filter(key => key !== 'nett')
@@ -115,45 +114,43 @@ const PDFBreakdown = () => {
           
           {breakdown[key] // All input fields
             .filter(row => row.type !== 'auto')
-            .map(({ id, label }) => (
-              <FormContextConsumer key={id}>
-                {({ [id]: value }) => (
-                  <View style={tableRow}>
-                    <View style={labelCol}>
-                      <View style={labelCell}>
-                        <Text>{label}</Text>
-                      </View>
-                    </View>
-                    <View style={valueCol}>
-                      <View style={valueCell}>
-                        <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
-                      </View>
+            .map(({ id, label }) => {
+              const { [id]: value } = props;
+              return (
+                <View style={tableRow} key={id}>
+                  <View style={labelCol}>
+                    <View style={labelCell}>
+                      <Text>{label}</Text>
                     </View>
                   </View>
-                )}
-              </FormContextConsumer>
-            ))}
+                  <View style={valueCol}>
+                    <View style={valueCell}>
+                      <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            })}
 
           {breakdown[key] // ReadOnly fields
             .filter(row => row.type === 'auto')
-            .map(({ id, label }) => (
-              <FormContextConsumer key={id}>
-                {({ [id]: value }) => (
-                  <View style={tableRowReadOnly}>
-                    <View style={labelCol}>
-                      <View style={labelCell}>
-                        <Text>{label}</Text>
-                      </View>
-                    </View>
-                    <View style={valueCol}>
-                      <View style={valueCell}>
-                        <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
-                      </View>
+            .map(({ id, label }) => {
+              const { [id]: value } = props;
+              return (
+                <View style={tableRowReadOnly} key={id}>
+                  <View style={labelCol}>
+                    <View style={labelCell}>
+                      <Text>{label}</Text>
                     </View>
                   </View>
-                )}
-              </FormContextConsumer>
-            ))}
+                  <View style={valueCol}>
+                    <View style={valueCell}>
+                      <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            })}
         </View>
       ))
   );

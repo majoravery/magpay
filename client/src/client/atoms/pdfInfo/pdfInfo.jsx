@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { FormContextConsumer } from '../../../context/formContext';
 import { info } from '../../../form.v2.json';
 
 const BORDER_STYLE = 'solid';
@@ -102,7 +101,7 @@ const renderer = (keyGroup, props) => {
           {rows.map(({ id, label }) => {
             const { [id]: value } = props;
             return (
-              <View style={tableRow}>
+              <View style={tableRow} key={id}>
                 <View style={col}>
                   <View style={labelCell}>
                     <Text>{label}</Text>
