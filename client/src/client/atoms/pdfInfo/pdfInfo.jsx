@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { FormContextConsumer } from '../../../context/formContext';
 import { info } from '../../../form.v2.json';
 
 const BORDER_STYLE = 'solid';
@@ -90,50 +89,49 @@ const stringValue = StyleSheet.create({
   width: COL_WIDTH_FULL,
 });
 
-const renderer = side => {
+const renderer = (keyGroup, props) => {
   return Object.keys(info)
-    .filter(key => side.includes(key))
+    .filter(key => keyGroup.includes(key))
     .map(key => {
       const rows = info[key];
       const displayDollarSign = key === 'cpf';
 
       return (
         <View style={table} key={key}>
-          {rows.map(({ id, label }) => (
-            <FormContextConsumer key={id}>
-              {({ [id]: value }) => (
-                <View style={tableRow}>
-                  <View style={col}>
-                    <View style={labelCell}>
-                      <Text>{label}</Text>
-                    </View>
-                  </View>
-                  <View style={col}>
-                    <View style={valueCell}>
-                      {displayDollarSign
-                        ? <Fragment>
-                            <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
-                          </Fragment>
-                        : <Text style={stringValue}>{value}</Text>}
-                    </View>
+          {rows.map(({ id, label }) => {
+            const { [id]: value } = props;
+            return (
+              <View style={tableRow} key={id}>
+                <View style={col}>
+                  <View style={labelCell}>
+                    <Text>{label}</Text>
                   </View>
                 </View>
-              )}
-            </FormContextConsumer>
-          ))}
+                <View style={col}>
+                  <View style={valueCell}>
+                    {displayDollarSign
+                      ? <Fragment>
+                          <Text style={dollarSign}>$</Text><Text style={numericValue}>{value}</Text>
+                        </Fragment>
+                      : <Text style={stringValue}>{value}</Text>}
+                  </View>
+                </View>
+              </View>
+            )
+          })}
         </View>
       );
     });
 }
 
-const PDFInfo = () => {
+const PDFInfo = props => {
   return (
     <View style={container}>
       <View style={left}>
-        {renderer(COLUMN_LEFT)}
+        {renderer(COLUMN_LEFT, props)}
       </View>
       <View style={right}>
-        {renderer(COLUMN_RIGHT)}
+        {renderer(COLUMN_RIGHT, props)}
       </View>
     </View>
   );

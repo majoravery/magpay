@@ -11,7 +11,7 @@ import { FormContextConsumer } from '../../../context/formContext';
 const rowRenderer = row => {
   return (
     <FormContextConsumer key={row.id}>
-      {({ setField, [row.id]: value }) => { // dunno if [row.id] works
+      {({ setField, [row.id]: value }) => {
         switch(row.type) {
           case 'auto':
             return <ReadOnly value={value} {...row} />;

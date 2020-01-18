@@ -29,12 +29,12 @@ const page = StyleSheet.create({
   padding: "50px 45px",
 });
 
-const PDF = () => (
+const PDF = props => (
   <Document>
     <Page style={page}>
       <PDFHeader />
-      <PDFInfo />
-      <PDFBreakdown />
+      <PDFInfo {...props} />
+      <PDFBreakdown {...props} />
       <PDFFooter />
     </Page>
   </Document>
@@ -94,13 +94,14 @@ const EmailPayslip = props => {
 
   return (
     <FormContextConsumer>
-      {({ nameOfEmployee, salaryPeriod }) => {
+      {(props) => {
+        const { nameOfEmployee, salaryPeriod } = props;
         const isButtonDisabled = !ready || !!isSending;
         const name = nameOfEmployee ? nameOfEmployee : `[employee name]`;
 
         return (
           <Fragment>
-            {!ready && <BlobProvider document={<PDF />}>
+            {!ready && <BlobProvider document={<PDF {...props} />}>
               {({ blob, url, loading, error }) => {
                 if (blob) {
                   blobToDataURL(blob, setDataUri);
