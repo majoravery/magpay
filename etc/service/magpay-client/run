@@ -1,4 +1,4 @@
 #!/bin/sh
 export PORT=3012
 cd /usr/app/client
-exec serve -s build
+exec yarn start:live
