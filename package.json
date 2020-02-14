@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "Avery <spacemup@users.noreply.github.com>",
   "engines": {
-    "node": "~10.16.0",
+    "node": "~10.19.0",
     "npm": "~6.9.0"
   },
   "scripts": {

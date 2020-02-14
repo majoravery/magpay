@@ -1,0 +1,4 @@
+#!/bin/sh
+export PORT=3012
+cd /usr/app/client
+exec yarn start:live
