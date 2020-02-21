@@ -29,7 +29,8 @@ const page = StyleSheet.create({
   padding: "50px 45px",
 });
 
-const PDF = props => (
+const PDF = props => {
+  return (
   <Document>
     <Page style={page}>
       <PDFHeader />
@@ -38,7 +39,7 @@ const PDF = props => (
       <PDFFooter />
     </Page>
   </Document>
-);
+)};
 
 const EmailPayslip = props => {
   const [ready, setReady] = useState(false);

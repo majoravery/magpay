@@ -22,7 +22,7 @@ RUN yarn install
 
 COPY ./client .
 
-CMD ["yarn", "build"]
+RUN yarn build
 
 # Final image
 FROM alpine:3.10

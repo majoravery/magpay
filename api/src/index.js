@@ -55,12 +55,12 @@ function storeTokens(tokens, response) {
 }
 
 // Routes
-app.get('/api/', (request, response, next) => {
+app.get('/', (request, response, next) => {
   // response.json({ info: 'Node.js, Express, and Postgres API' })
   response.redirect('/home');
 });
 
-app.get('/api/login', (request, response) => {
+app.get('/login', (request, response) => {
   if (request.session.isLoggedIn) {
     response.redirect('/home');
     return;
@@ -76,7 +76,7 @@ app.get('/api/login', (request, response) => {
   })
 });
 
-app.get('/api/logout', (request, response) => {
+app.get('/logout', (request, response) => {
   request.session = null;
   response
     .clearCookie('magbelle_rt')
@@ -84,7 +84,7 @@ app.get('/api/logout', (request, response) => {
     .redirect('/');
 });
 
-app.get('/api/oauthcallback', async (request, response) => {
+app.get('/oauthcallback', async (request, response) => {
   const { code } = request.query;
   if (!code) {
     response.json({ success: false, message: 'Missing authorisation token' }).end();
@@ -107,12 +107,12 @@ app.get('/api/oauthcallback', async (request, response) => {
     .redirect('/home');
 });
 
-app.get('/api/user', (request, response) => {
+app.get('/user', (request, response) => {
   response.json(request.session.userinfo).end();
 })
 
 // FIXME: find a better session method that syncs with the tokens
-app.get('/api/logincheck', (request, response) => {
+app.get('/logincheck', (request, response) => {
   if (request.session.isLoggedIn) {
     response.status(200).send({ success: true });
   } else {
@@ -120,7 +120,7 @@ app.get('/api/logincheck', (request, response) => {
   }
 })
 
-app.post('/api/email', async (request, response) => {
+app.post('/email', async (request, response) => {
   const { cookies } = request;
   const { magbelle_rt: refreshToken, magbelle_at: accessToken } = cookies;
   const { email } = request.session.userinfo;
