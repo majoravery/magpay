@@ -10,8 +10,6 @@
     "npm": "~6.9.0"
   },
   "scripts": {
-    "start": "docker-compose up",
-    "deploy": "docker-compose -f docker-compose.yml -f production.yml build api client nginx && docker-compose -f docker-compose.yml -f production.yml up --no-deps -d api client nginx"
   },
   "devDependencies": {
     "prettier": "~1.19.1"
