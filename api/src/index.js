@@ -160,7 +160,6 @@ app.post('/email', async (request, response) => {
       path: dataUri,
     }
   };
-  console.log(mail);
   transporter.sendMail(mail, (err, info) => {
     console.log(err, info);
     let obj;
