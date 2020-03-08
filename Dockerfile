@@ -10,8 +10,6 @@ RUN yarn install
 
 COPY ./api .
 
-CMD ["yarn", "start"]
-
 # Client
 FROM node:10.19-alpine as client
 
@@ -27,7 +25,6 @@ RUN yarn build
 # Final image
 FROM alpine:3.10
 
-# FIXME: might not actually need ncurses-libs
 RUN apk add --update runit nodejs yarn haproxy && \ 
     rm -rf /var/cache/apk/*
 
