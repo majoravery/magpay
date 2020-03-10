@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { breakdown } from '../../../form.v2.json';
+import { breakdown } from '../../../form.json';
 
 const BG_COLOR = '#eee';
 const BORDER_STYLE = 'solid';

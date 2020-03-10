@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import { node } from 'prop-types';
 
-import { info, breakdown } from '../form.v2.json';
+import { info, breakdown } from '../form.json';
 
 const defaultState = {};
 

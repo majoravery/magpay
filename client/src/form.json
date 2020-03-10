@@ -1,180 +1,188 @@
 {
-  "sections": {
-    "info": {
-      "particulars": [
-        {
-          "label": "Name of Employer",
-          "id": "nameOfEmployer",
-          "type": "string",
-          "initialValue": "Lim Ley Thin"
-        },
-        {
-          "label": "Name of Employee",
-          "id": "nameOfEmployee",
-          "type": "string"
-        },
-        {
-          "label": "I\/C No.",
-          "id": "icNo",
-          "type": "string"
-        }
-      ],
-      "topRight": [
-        {
-          "label": "Salary Period",
-          "id": "salaryPeriod",
-          "type": "month"
-        },
-        {
-          "label": "Date of Payment",
-          "id": "dateOfPayment",
-          "type": "date"
-        }
-      ],
-      "bottomLeft": [
-        {
-          "label": "Overtime Hours",
-          "id": "overtimeHours",
-          "type": "string"
-        },
-        {
-          "label": "Mode of Payment",
-          "id": "modeOfPayment",
-          "type": "radio",
-          "choices": [
-            {
-              "label": "Cash",
-              "id": "cash"
-            },
-            {
-              "label": "Cheque",
-              "id": "cheque"
-            },
-            {
-              "label": "Bank Deposit",
-              "id": "bankDeposit"
-            }
-          ]
-        }
-      ],
-      "cpfContribution": [
-        {
-          "label": "Employee CPF",
-          "id": "employeeCpf",
-          "type": "number"
-        },
-        {
-          "label": "Employer CPF",
-          "id": "employerCpf",
-          "type": "number"
-        },
-        {
-          "label": "Total CPF Contribution",
-          "id": "cpfContributionOutput",
-          "type": "auto",
-          "initialValue": "0.00",
-          "sumType": "subtotal"
-        }
-      ]
+  "//1": "This JSON is formatted according to how it will be displayed in the final PDF as that is the end product of this app.",
+  "info": {
+    "particulars": [
+      {
+        "label": "Name of Employer",
+        "id": "nameOfEmployer",
+        "type": "string",
+        "initialValue": "Lim Ley Thin"
+      },
+      {
+        "label": "Name of Employee",
+        "id": "nameOfEmployee",
+        "type": "string"
+      },
+      {
+        "label": "I\/C No.",
+        "id": "icNo",
+        "type": "string"
+      }
+    ],
+    "duration": [
+      {
+        "label": "Salary Period",
+        "id": "salaryPeriod",
+        "type": "month"
+      },
+      {
+        "label": "Date of Payment",
+        "id": "dateOfPayment",
+        "type": "date"
+      }
+    ],
+    "payment": [
+      {
+        "label": "Overtime Hours",
+        "id": "overtimeHours",
+        "type": "string"
+      },
+      {
+        "label": "Mode of Payment",
+        "id": "modeOfPayment",
+        "type": "radio",
+        "choices": [
+          {
+            "label": "Cash",
+            "id": "cash"
+          },
+          {
+            "label": "Cheque",
+            "id": "cheque"
+          },
+          {
+            "label": "Bank Deposit",
+            "id": "bankDeposit"
+          }
+        ]
+      }
+    ],
+    "cpf": [
+      {
+        "label": "Employee CPF",
+        "id": "employeeCpf",
+        "type": "number",
+        "sumGroupId": "cpf"
+      },
+      {
+        "label": "Employer CPF",
+        "id": "employerCpf",
+        "type": "number",
+        "sumGroupId": "cpf"
+      },
+      {
+        "label": "Total CPF Contribution",
+        "id": "cpf",
+        "type": "auto",
+        "initialValue": "0.00",
+        "sumType": "subtotal"
+      }
+    ]
+  },
+  "breakdown": {
+    "earnings": [
+      {
+        "label": "Basic Pay",
+        "id": "basicPay",
+        "type": "number",
+        "sumGroupId": "earnings"
+      },
+      {
+        "label": "Overtime Pay",
+        "id": "overtimePay",
+        "type": "number",
+        "sumGroupId": "earnings"
+      },
+      {
+        "label": "Commission",
+        "id": "commission",
+        "type": "number",
+        "sumGroupId": "earnings"
+      },
+      {
+        "label": "Allowances",
+        "id": "ratePerHour",
+        "type": "number",
+        "sumGroupId": "earnings"
+      },
+      {
+        "label": "(A) Gross Pay",
+        "id": "earnings",
+        "type": "auto",
+        "initialValue": "0.00",
+        "sumType": "subtotal"
+      }
+    ],
+    "deductions": [
+      {
+        "//to-do": "sync this with employee cpf above",
+        "label": "Employee CPF",
+        "id": "employeeCpf",
+        "type": "number",
+        "sumGroupId": "deductions",
+        "duplicate": true
+      },
+      {
+        "label": "Income Tax",
+        "id": "incomeTax",
+        "type": "number",
+        "sumGroupId": "deductions"
+      },
+      {
+        "label": "Advance Loan",
+        "id": "advanceLoan",
+        "type": "number",
+        "sumGroupId": "deductions"
+      },
+      {
+        "label": "(B) Total Deductions",
+        "id": "deductions",
+        "type": "auto",
+        "initialValue": "0.00",
+        "sumType": "subtotal"
+      }
+    ],
+    "additions": [
+      {
+        "label": "Reimbursement",
+        "id": "reimbursement",
+        "type": "number",
+        "sumGroupId": "additions"
+      },
+      {
+        "label": "Bonus",
+        "id": "bonus",
+        "type": "number",
+        "sumGroupId": "additions"
+      },
+      {
+        "label": "(C) Total Additions",
+        "id": "additions",
+        "type": "auto",
+        "initialValue": "0.00",
+        "sumType": "subtotal"
+      }
+    ],
+    "nett": [
+      {
+        "label": "Nett Payment (A-B+C)",
+        "id": "breakdown",
+        "type": "auto",
+        "initialValue": "0.00",
+        "sumType": "total"
+      }
+    ]
+  },
+  "footer": {
+    "left": {
+      "label": "Approved By",
+      "id": "approvedBy",
+      "type": "string"
     },
-    "breakdown": {
-      "earnings": [
-        {
-          "label": "Basic Pay",
-          "id": "basicPay",
-          "type": "number"
-        },
-        {
-          "label": "Overtime Pay",
-          "id": "overtimePay",
-          "type": "number"
-        },
-        {
-          "label": "Commission",
-          "id": "commission",
-          "type": "number"
-        },
-        {
-          "label": "Allowances",
-          "id": "ratePerHour",
-          "type": "number"
-        },
-        {
-          "label": "(A) Gross Pay",
-          "id": "earningsOutput",
-          "type": "auto",
-          "initialValue": "0.00",
-          "sumType": "subtotal"
-        }
-      ],
-      "deductions": [
-        {
-          "label": "CPF",
-          "id": "employeeCpf",
-          "type": "number"
-        },
-        {
-          "label": "Income Tax",
-          "id": "incomeTax",
-          "type": "number"
-        },
-        {
-          "label": "Advance Loan",
-          "id": "advanceLoan",
-          "type": "number"
-        },
-        {
-          "label": "(B) Total Deductions",
-          "id": "deductionsOutput",
-          "type": "auto",
-          "initialValue": "0.00",
-          "sumType": "subtotal"
-        }
-      ],
-      "additions": [
-        {
-          "label": "Reimbursement",
-          "id": "reimbursement",
-          "type": "number"
-        },
-        {
-          "label": "Bonus",
-          "id": "bonus",
-          "type": "number"
-        },
-        {
-          "label": "(C) Total Additions",
-          "id": "additionsOutput",
-          "type": "auto",
-          "initialValue": "0.00",
-          "sumType": "subtotal"
-        }
-      ],
-      "nett": [
-        {
-          "label": "Nett Payment (A-B+C)",
-          "id": "nettPayment",
-          "type": "auto",
-          "initialValue": "0.00",
-          "sumType": "total"
-        }
-      ]
-    },
-    "footer": {
-      "left": [
-        {
-          "label": "Approved By",
-          "id": "approvedBy",
-          "type": "string"
-        }
-      ],
-      "right": [
-        {
-          "label": "Employee's Signature",
-          "id": "employeesSignature",
-          "type": "string"
-        }
-      ]
+    "right": {
+      "label": "Employee's Signature",
+      "id": "employeesSignature",
+      "type": "string"
     }
   }
 }
