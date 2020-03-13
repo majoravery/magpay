@@ -1,1 +1,1 @@
-export default from './Magbelle';
+export { default } from './app';

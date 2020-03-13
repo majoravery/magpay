@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import rowRenderer from '../row';
 
-import { breakdown } from '../../../form.v2.json';
+import { breakdown } from '../../../form.json';
 
 import './formBreakdown.scss';
 

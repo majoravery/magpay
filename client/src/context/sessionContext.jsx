@@ -69,10 +69,19 @@ class SessionContextProvider extends Component {
       cookie.remove(cookieLoggedInIdentifier);
     }
 
-    const { success: loginSucccess } = await fetch(`${BACKEND_ROUTE}/logincheck`).then(res => res.json());
-    this.setState({ loggedIn: loginSucccess });
+    let loggedIn = false;
+    fetch(`${BACKEND_ROUTE}/logincheck`, {
+    })
+      .then(res => res.json())
+      .then(({ success }) => {
+        console.log(success);
+        loggedIn = success
+      })
+      .catch(console.error);
+    this.setState({ loggedIn });
   }
 
+  // NOTE: these arent being used!!! use it
   logUserIn(userId) {
     return new Promise(resolve => {
       this.setUserLoggedIn(userId);

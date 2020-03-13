@@ -38,11 +38,11 @@ const Magpay = () => {
     <FormContextProvider>
       <SessionContextConsumer>
       {({ loggedIn }) => {
-        // NOTE: this might not work when users log out but that's not being implemented rn anyway
-        if (loggedIn === undefined) {
-          return false;
-        }
-
+        // NOTE: i forgot what i was trying to do here
+        // // NOTE: this might not work when users log out but that's not being implemented rn anyway
+        // if (loggedIn === undefined) {
+          // return false;
+        // }
         return (
           <Fragment>
             <Route path="/" exact component={Splash} />

@@ -2,7 +2,7 @@ import React from 'react';
 
 import rowRenderer from '../row';
 
-import { info } from '../../../form.v2.json';
+import { info } from '../../../form.json';
 
 import './formInfo.scss';
 

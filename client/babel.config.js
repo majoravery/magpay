@@ -14,12 +14,14 @@ module.exports = function (api) {
           node: 'current',
         },
         useBuiltIns: 'usage',
+        corejs: 2,
       },
     ],
   ];
 
   const plugins = [
     '@babel/plugin-proposal-export-default-from',
+    '@babel/plugin-syntax-dynamic-import',
   ];
 
   return {

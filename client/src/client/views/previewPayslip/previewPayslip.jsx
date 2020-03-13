@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '../../atoms/header';
 import { FormContextConsumer } from '../../../context/formContext';
 
-import { info, breakdown, footer } from '../../../form.v2.json';
+import { info, breakdown, footer } from '../../../form.json';
 import './previewPayslip.scss';
 
 // NOTE: maybe add a note saying "not accurate representation" or something

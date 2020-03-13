@@ -20,15 +20,17 @@ const oauth2Client = new google.auth.OAuth2(
 let refreshToken;
 let accessToken;
 
+const HOME_URL = process.env.NODE_ENV === 'production' ? '/home' : 'http://localhost:3012/home';
+
 app.set('trust proxy', 1);
 app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
-  keys: ['not quite sure what i should put in here', 'will this work'],
+  keys: ['probs should use some secure key here'],
   cookie: {
     secure: true,
     httpOnly: true,
-    expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000) // One week
+    maxAge: new Date(Date.now() + 60 * 60 * 3 * 1000) // Three hours
   }
 }))
 app.use(bodyParser.json());
@@ -56,15 +58,15 @@ function storeTokens(tokens, response) {
 
 // Routes
 app.get('/', (request, response, next) => {
-  // response.json({ info: 'Node.js, Express, and Postgres API' })
-  response.redirect('/home');
+  // response.json({ info: 'Node.js, Express 4, and Postgres API' })
+  response.redirect(HOME_URL);
 });
 
 app.get('/login', (request, response) => {
-  if (request.session.isLoggedIn) {
-    response.redirect('/home');
-    return;
-  }
+  // if (request.session.isLoggedIn) {
+  //   response.redirect(HOME_URL);
+  //   return;
+  // }
 
   const auth = new Promise((resolve, reject) => {
     const authorizeUrl = oauth2Client.generateAuthUrl({
@@ -104,19 +106,20 @@ app.get('/oauthcallback', async (request, response) => {
   response
     .cookie('magbelle_rt', refreshToken, { maxAge: 604800, httpOnly: true }) // One week
     .cookie('magbelle_at', accessToken, { maxAge: 604800, httpOnly: true }) // One week
-    .redirect('/home');
+    .redirect(HOME_URL);
 });
 
 app.get('/user', (request, response) => {
   response.json(request.session.userinfo).end();
 })
 
-// FIXME: find a better session method that syncs with the tokens
+// FIXME: find a better session method that syncs FE with the tokens
 app.get('/logincheck', (request, response) => {
+  console.log(request.session);
   if (request.session.isLoggedIn) {
-    response.status(200).send({ success: true });
+    response.json({ success: true });
   } else {
-    response.status(401).send({ success: false });
+    response.json({ success: false });
   }
 })
 

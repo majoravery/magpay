@@ -1,4 +1,4 @@
-export const BACKEND_ROUTE = '/api';
+export const BACKEND_ROUTE = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8001';
 
 export const COOKIE_STATE_TRUE = '1';
 export const COOKIE_STATE_FALSE = '0'

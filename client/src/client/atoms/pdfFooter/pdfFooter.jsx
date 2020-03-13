@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { footer } from '../../../form.v2.json';
+import { footer } from '../../../form.json';
 
 const BORDER_STYLE = 'solid';
 const BORDER_COLOR = '#6c6c6c';
