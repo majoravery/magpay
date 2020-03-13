@@ -1,9 +1,7 @@
+.DS_Store
 .env
 .out
 .vscode
-node_modules/
-*/node_modules/
-yarn-error.log
-*/yarn-error.log
-.DS_Store
+*.log
+*node_modules/
 client/build/

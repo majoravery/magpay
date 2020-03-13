@@ -43,7 +43,6 @@ const Magpay = () => {
         if (loggedIn === undefined) {
           return false;
         }
-        console.log({ magpayLoggedIn: loggedIn });
         return (
           <Fragment>
             <Route path="/" exact component={Splash} />

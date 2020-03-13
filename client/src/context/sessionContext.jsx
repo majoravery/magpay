@@ -75,7 +75,6 @@ class SessionContextProvider extends Component {
     })
       .then(res => res.json())
       .then(({ success }) => {
-        console.log({ success });
         loggedIn = success;
         this.setState({ loggedIn });
       })
@@ -108,7 +107,6 @@ class SessionContextProvider extends Component {
       logUserOut: this.logUserOut,
       logUserIn: this.logUserIn,
     };
-    console.log({ sessionContextLoggedIn: loggedIn });
     return <Provider value={{ ...value }}>{children}</Provider>;
   }
 }

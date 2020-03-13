@@ -20,6 +20,7 @@ RUN yarn install
 
 COPY ./client .
 
+ENV NODE_ENV=production
 RUN yarn build
 
 # Final image
