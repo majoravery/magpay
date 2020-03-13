@@ -9,7 +9,9 @@
     "node": "~10.19.0",
     "npm": "~6.9.0"
   },
-  "scripts": {},
+  "scripts": {
+    "deploy": "heroku container:push -a magpay web && heroku container:release -a magpay web"
+  },
   "devDependencies": {
     "prettier": "~1.19.1"
   }

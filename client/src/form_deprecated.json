@@ -1,0 +1,180 @@
+{
+  "sections": {
+    "info": {
+      "particulars": [
+        {
+          "label": "Name of Employer",
+          "id": "nameOfEmployer",
+          "type": "string",
+          "initialValue": "Lim Ley Thin"
+        },
+        {
+          "label": "Name of Employee",
+          "id": "nameOfEmployee",
+          "type": "string"
+        },
+        {
+          "label": "I\/C No.",
+          "id": "icNo",
+          "type": "string"
+        }
+      ],
+      "topRight": [
+        {
+          "label": "Salary Period",
+          "id": "salaryPeriod",
+          "type": "month"
+        },
+        {
+          "label": "Date of Payment",
+          "id": "dateOfPayment",
+          "type": "date"
+        }
+      ],
+      "bottomLeft": [
+        {
+          "label": "Overtime Hours",
+          "id": "overtimeHours",
+          "type": "string"
+        },
+        {
+          "label": "Mode of Payment",
+          "id": "modeOfPayment",
+          "type": "radio",
+          "choices": [
+            {
+              "label": "Cash",
+              "id": "cash"
+            },
+            {
+              "label": "Cheque",
+              "id": "cheque"
+            },
+            {
+              "label": "Bank Deposit",
+              "id": "bankDeposit"
+            }
+          ]
+        }
+      ],
+      "cpfContribution": [
+        {
+          "label": "Employee CPF",
+          "id": "employeeCpf",
+          "type": "number"
+        },
+        {
+          "label": "Employer CPF",
+          "id": "employerCpf",
+          "type": "number"
+        },
+        {
+          "label": "Total CPF Contribution",
+          "id": "cpfContributionOutput",
+          "type": "auto",
+          "initialValue": "0.00",
+          "sumType": "subtotal"
+        }
+      ]
+    },
+    "breakdown": {
+      "earnings": [
+        {
+          "label": "Basic Pay",
+          "id": "basicPay",
+          "type": "number"
+        },
+        {
+          "label": "Overtime Pay",
+          "id": "overtimePay",
+          "type": "number"
+        },
+        {
+          "label": "Commission",
+          "id": "commission",
+          "type": "number"
+        },
+        {
+          "label": "Allowances",
+          "id": "ratePerHour",
+          "type": "number"
+        },
+        {
+          "label": "(A) Gross Pay",
+          "id": "earningsOutput",
+          "type": "auto",
+          "initialValue": "0.00",
+          "sumType": "subtotal"
+        }
+      ],
+      "deductions": [
+        {
+          "label": "CPF",
+          "id": "employeeCpf",
+          "type": "number"
+        },
+        {
+          "label": "Income Tax",
+          "id": "incomeTax",
+          "type": "number"
+        },
+        {
+          "label": "Advance Loan",
+          "id": "advanceLoan",
+          "type": "number"
+        },
+        {
+          "label": "(B) Total Deductions",
+          "id": "deductionsOutput",
+          "type": "auto",
+          "initialValue": "0.00",
+          "sumType": "subtotal"
+        }
+      ],
+      "additions": [
+        {
+          "label": "Reimbursement",
+          "id": "reimbursement",
+          "type": "number"
+        },
+        {
+          "label": "Bonus",
+          "id": "bonus",
+          "type": "number"
+        },
+        {
+          "label": "(C) Total Additions",
+          "id": "additionsOutput",
+          "type": "auto",
+          "initialValue": "0.00",
+          "sumType": "subtotal"
+        }
+      ],
+      "nett": [
+        {
+          "label": "Nett Payment (A-B+C)",
+          "id": "nettPayment",
+          "type": "auto",
+          "initialValue": "0.00",
+          "sumType": "total"
+        }
+      ]
+    },
+    "footer": {
+      "left": [
+        {
+          "label": "Approved By",
+          "id": "approvedBy",
+          "type": "string"
+        }
+      ],
+      "right": [
+        {
+          "label": "Employee's Signature",
+          "id": "employeesSignature",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

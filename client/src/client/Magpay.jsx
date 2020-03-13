@@ -38,19 +38,22 @@ const Magpay = () => {
     <FormContextProvider>
       <SessionContextConsumer>
       {({ loggedIn }) => {
-        // NOTE: i forgot what i was trying to do here
-        // // NOTE: this might not work when users log out but that's not being implemented rn anyway
-        // if (loggedIn === undefined) {
-          // return false;
-        // }
+        // FIXME: without these, the app will stay on the splash page forever
+        // NOTE: this might not work when users log out but that's not being implemented rn anyway
+        if (loggedIn === undefined) {
+          return false;
+        }
+        console.log({ magpayLoggedIn: loggedIn });
         return (
           <Fragment>
             <Route path="/" exact component={Splash} />
             <PrivateRoute path="/home" loggedIn={loggedIn}><Home /></PrivateRoute>
+            {/* FIXME: these dont redirect back to / */}
             <PrivateRoute path="/payslip/new" loggedIn={loggedIn}><NewPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/preview" loggedIn={loggedIn}><PreviewPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/email" loggedIn={loggedIn}><EmailPayslip /></PrivateRoute>
             <PrivateRoute path="/payslip/sent" loggedIn={loggedIn}><EmailSent /></PrivateRoute>
+            {/* FIXME: this page displays LOG OUT button */}
             <Route path="/privacy" component={PrivacyPolicy} />
           </Fragment>
         );

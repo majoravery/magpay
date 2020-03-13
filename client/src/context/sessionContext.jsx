@@ -71,14 +71,15 @@ class SessionContextProvider extends Component {
 
     let loggedIn = false;
     fetch(`${BACKEND_ROUTE}/logincheck`, {
+      credentials: 'include',
     })
       .then(res => res.json())
       .then(({ success }) => {
-        console.log(success);
-        loggedIn = success
+        console.log({ success });
+        loggedIn = success;
+        this.setState({ loggedIn });
       })
       .catch(console.error);
-    this.setState({ loggedIn });
   }
 
   // NOTE: these arent being used!!! use it
@@ -107,6 +108,7 @@ class SessionContextProvider extends Component {
       logUserOut: this.logUserOut,
       logUserIn: this.logUserIn,
     };
+    console.log({ sessionContextLoggedIn: loggedIn });
     return <Provider value={{ ...value }}>{children}</Provider>;
   }
 }

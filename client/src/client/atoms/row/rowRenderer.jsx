@@ -20,7 +20,11 @@ const rowRenderer = row => {
           case 'month':
             return <MonthPicker onChange={setField} {...row} />;
           case 'number':
-            return <Numeral onChange={setField} {...row} />;
+            let props = row;
+            if (value) {
+              props.value = parseInt(value, 10);
+            }
+            return <Numeral onChange={setField} {...props} />;
           case 'radio':
             return <Radio onChange={setField} {...row} />;
           case 'string':

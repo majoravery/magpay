@@ -116,10 +116,11 @@
     "deductions": [
       {
         "//to-do": "sync this with employee cpf above",
-        "label": "CPF",
-        "id": "cpf",
+        "label": "Employee CPF",
+        "id": "employeeCpf",
         "type": "number",
-        "sumGroupId": "deductions"
+        "sumGroupId": "deductions",
+        "duplicate": true
       },
       {
         "label": "Income Tax",

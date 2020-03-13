@@ -29,7 +29,7 @@ app.use(cookieSession({
   keys: ['probs should use some secure key here'],
   cookie: {
     secure: true,
-    httpOnly: true,
+    httpOnly: false,
     maxAge: new Date(Date.now() + 60 * 60 * 3 * 1000) // Three hours
   }
 }))
@@ -63,11 +63,6 @@ app.get('/', (request, response, next) => {
 });
 
 app.get('/login', (request, response) => {
-  // if (request.session.isLoggedIn) {
-  //   response.redirect(HOME_URL);
-  //   return;
-  // }
-
   const auth = new Promise((resolve, reject) => {
     const authorizeUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
@@ -101,7 +96,6 @@ app.get('/oauthcallback', async (request, response) => {
 
   const oauth2data = await oauth2.userinfo.get({ auth: oauth2Client });
   request.session.userinfo = oauth2data.data;
-  request.session.isLoggedIn = true;
 
   response
     .cookie('magbelle_rt', refreshToken, { maxAge: 604800, httpOnly: true }) // One week
@@ -115,8 +109,7 @@ app.get('/user', (request, response) => {
 
 // FIXME: find a better session method that syncs FE with the tokens
 app.get('/logincheck', (request, response) => {
-  console.log(request.session);
-  if (request.session.isLoggedIn) {
+  if (request.session.userinfo) {
     response.json({ success: true });
   } else {
     response.json({ success: false });

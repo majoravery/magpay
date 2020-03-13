@@ -71,6 +71,10 @@
   .input input {
     text-align: right;
   }
+
+  &.displayOnly {
+    background-color: #EFEFEF;
+  }
 }
 
 .radio {
