@@ -30,10 +30,10 @@ const PrivateRoute = ({ children, loggedIn, ...rest }) => {
         }}
     />
   );
-      
 };
 
 const Magpay = () => {
+  // NOTE: i think i need switch in here??? idk why i dont have it, it didnt work without switch for socks3
   return (
     <FormContextProvider>
       <SessionContextConsumer>
